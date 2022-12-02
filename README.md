@@ -15,13 +15,13 @@ Projet Arduino – 2022/2023
 
 <h2>Apparence :</h2>
     <ul>
-        <li>Physique : Le jeu est un boite sur laquelle est disposée 10 buzzers. Sur cette même surface est apparent deux afficheurs, l'un pour le score du joueur, l'autre pour le temps restant. Et également un bouton pour démarrer la partie</li>
-        <li>Virtuel : Une interface sur téléphone connectée par bluetooth donne des informations complémentaires sur la partie : score, pourcentage de précision, erreur (buzzer éteints appuyés), classement, etc</li>
+        <li>Physique : Le jeu est une boîte sur laquelle est disposée 10 buzzers. Sur cette même surface est apparent deux afficheurs, l'un pour le score du joueur, l'autre pour le temps restant. Et également un bouton pour démarrer la partie</li>
+        <li>Virtuel : Une interface sur téléphone connectée par bluetooth donne des informations complémentaires sur la partie : score, pourcentage de précision, nombre d'erreurs (buzzers éteints appuyés), classement, etc</li>
     </ul>
 
 <h2>Plusieurs modes de jeu :</h2>
     <ul>
-        <li>Mode facile : Les lumières ne s’éteignent que lorsqu’on a appuyer dessus</li>
+        <li>Mode facile : Les lumières ne s’éteignent que lorsqu’on a appuyé dessus</li>
         <li>Mode normal : Les lumières s’éteignent également au bout d’un certain temps fixe</li>
     </ul>
 
