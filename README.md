@@ -1,5 +1,5 @@
 <body>
-    <h1>PolyBuzz</h1>
+    <h1>PolyBuzz - Cahier des Charges</h1>
     
 Projet Arduino – 2022/2023
 <br>De CAZAUBON Lorenz et MAUVOISIN Paul - Groupe 1<br>
