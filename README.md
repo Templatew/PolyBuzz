@@ -11,7 +11,8 @@ Projet Arduino – 2022/2023
 <h2>Origine de l’inspiration :</h2>
     <p>Reproduire un test de réflexe comme ceux que l'on peut voir dans les entraînements de Formule 1.
     <br>L'objectif de ce test est d'éteindre le plus de lumières qui s’allument en appuyant dessus.<br>
-</p>
+</p>![image](https://user-images.githubusercontent.com/96289463/208205557-b7f10503-2885-4e51-9f55-9b3e8ba12d1f.png)
+
 
 <h2>Apparence :</h2>
     <ul>
