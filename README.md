@@ -1,5 +1,5 @@
 <body>
-    <h1>PolyBuzz</h1>
+    <h1>PolyBuzz | Cahier des Charges</h1>
     
 Projet Arduino – 2022/2023
 <br>De CAZAUBON Lorenz et MAUVOISIN Paul - Groupe 1<br>
@@ -28,7 +28,7 @@ Projet Arduino – 2022/2023
 
 <h2>Matériel :</h2>
     <ul>
-        <li>1 caisse (à terme en bois)</li>
+        <li>1 boîte (à terme en bois)</li>
         <li>10 buzzers</li>
         <li>1 module bluetooth</li>
         <li>A compléter..</li>
