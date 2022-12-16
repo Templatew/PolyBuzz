@@ -30,8 +30,8 @@ Projet Arduino – 2022/2023
     <ul>
         <li>1 caisse (à terme en bois)</li>
         <li>10 buzzers</li>
-        <li>2 afficheurs à 7 segments</li>
         <li>1 module bluetooth</li>
+        <li>A compléter..</li>
     </ul>
 
 </body>
