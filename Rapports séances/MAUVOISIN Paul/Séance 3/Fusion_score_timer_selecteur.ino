@@ -48,10 +48,6 @@ void setup() {
   pinMode(clkPin,INPUT);
   pinMode(dtPin,INPUT);
   pinMode(swPin,INPUT_PULLUP);
-
-  //Enregistrement du temps au démarrage du programme
-  //Explication du pourquoi dans la fonction Timer
-  //previousMillis = millis();
 }
 
 
@@ -285,7 +281,9 @@ void codeTimer(){
     }
 
     //Faire passer 1sec
-    if (millis() + initialeTemps > intervalleTemps){ //!!millis démarre au lancement du programme
+    currentMillis = millis();
+    if (currentMillis - previousMillis > intervalleTemps){
+      previousMillis = currentMillis;
       timeInit = timeInit-1;
       initialeTemps += intervalleTemps;
     }
