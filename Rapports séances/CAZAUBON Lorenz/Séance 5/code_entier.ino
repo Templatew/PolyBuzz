@@ -274,10 +274,7 @@ void simon() {
         step = 0;
         etat = "simon";
         score += 1;
-
-        
       }
-
     }
 
     if (liste_simon.length() == SIMON_LENGTH_MAX) {
@@ -307,14 +304,14 @@ void loop() {
           // Réduire le temps durant lequel le bouton est allumé afin d'augmenter la difficulté.
           if (choix_mode_jeu==2) {intervalle = 1000;}
 
-          jeu_un();
           afficher_score();
+          jeu_un();
           codeTimer();
         }
 
         if (choix_mode_jeu==3){ //Simon
-          simon();
           afficher_score();
+          simon();
         }
 
         if (choix_mode_jeu==4){ //Mastermind
