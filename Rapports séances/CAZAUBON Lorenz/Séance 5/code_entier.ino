@@ -34,7 +34,7 @@ int num_courant = 0;
 int num_courant_joueur = -1;
 const int SIMON_LENGTH_MAX = 10;
 String etat = "simon";
-String liste_simon = (String) random(NOMBRE_BOUTON);
+String liste_simon = (char) random(NOMBRE_BOUTON);
 
 //Parametres pour l'encodeur rotatif
 const int clkPin  = 10;
@@ -177,7 +177,7 @@ void reset_game() {
   similitude = 0;
   phase = 1;
   vie = 4;
-  blocage_bouton2 = HIGH;
+  blocage_bouton = HIGH;
   isolement_fonction = 0;
   
   // Reset score
@@ -256,8 +256,7 @@ void simon() {
           else {
             lcd.clear();
             lcd.setCursor(0, 0);
-            lcd.print("FDP");
-            
+            lcd.print("RIP");
           }
           delay(200);
         }
@@ -266,7 +265,7 @@ void simon() {
       if (step == liste_simon.length()) {
 
         // tous les boutons ont été pressés, ajoutons un nouveau bouton
-        liste_simon += (String) random(NOMBRE_BOUTON);
+        liste_simon += (char) random(NOMBRE_BOUTON);
         step = 0;
         etat == "simon";
         score += 1;
