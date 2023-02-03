@@ -236,7 +236,7 @@ void simon() {
     if (etat == "simon") {
 
       if (step == 0) {
-        liste_simon += (char) random(NOMBRE_BOUTON);
+        liste_simon += random(NOMBRE_BOUTON);
       }
       
       for (int i = 0; i < liste_simon.length(); i++) {
