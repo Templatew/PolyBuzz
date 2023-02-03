@@ -254,7 +254,7 @@ void simon() {
         }
       }
 
-      if (num_courant_joueur == -5) {
+      if (num_courant_joueur != num_courant) {
         return end_game();
       }
       else {
@@ -272,9 +272,9 @@ void simon() {
 
     }
 
-    if (liste_simon.length() == SIMON_LENGTH_MAX) {
-      return end_game();
-    }
+    // if (liste_simon.length() == SIMON_LENGTH_MAX) {
+    //   return end_game();
+    // }
 
 }
 
