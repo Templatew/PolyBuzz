@@ -34,7 +34,7 @@ int num_courant = 0;
 int num_courant_joueur = -1;
 const int SIMON_LENGTH_MAX = 10;
 String etat = "simon";
-String liste_simon = (char) random(NOMBRE_BOUTON);
+String liste_simon = "";
 
 //Parametres pour l'encodeur rotatif
 const int clkPin  = 10;
@@ -229,6 +229,10 @@ void jeu_un() {
 void simon() {
     
     if (etat == "simon") {
+
+      if (step == 0) {
+        liste_simon += (char) random(NOMBRE_BOUTON);
+      }
       
       for (int i = 0; i < liste_simon.length(); i++) {
 
@@ -263,9 +267,6 @@ void simon() {
       }
 
       if (step == liste_simon.length()) {
-
-        // tous les boutons ont été pressés, ajoutons un nouveau bouton
-        liste_simon += (char) random(NOMBRE_BOUTON);
         step = 0;
         etat == "simon";
         score += 1;
