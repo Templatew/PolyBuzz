@@ -140,7 +140,7 @@ void end_game() {
   lcd.print("Score final:");
   lcd.setCursor(0,1);
   lcd.print(score);
-  delay(1000);
+  delay(2000);
   reset_game();
 
   lcd.clear();
@@ -148,7 +148,7 @@ void end_game() {
   lcd.print("Fin de la partie");
   lcd.setCursor(0, 1);
   lcd.print("A bientot, Merci");
-  delay(1000);
+  delay(3000);
   setup_afficheur();
 
 }
@@ -254,7 +254,7 @@ void simon() {
         }
       }
 
-      if (num_courant_joueur == -1) {
+      if (num_courant_joueur == -5) {
         return end_game();
       }
       else {
