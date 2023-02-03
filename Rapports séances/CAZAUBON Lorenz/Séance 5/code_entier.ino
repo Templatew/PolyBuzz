@@ -4,13 +4,13 @@
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 
 // Bouton
-int bouton_pins[] = {
+const int bouton_pins[] = {
   53, 51, 49, 47, 45, 43, 41, 39, 37, 35,
 };
 
 
 // LED
-int led_pins[] = {
+const int led_pins[] = {
   52, 50, 48, 46, 44, 42, 40, 38, 36, 34,
 };
 
@@ -22,19 +22,19 @@ const int NOMBRE_BOUTON = sizeof(bouton_pins)/sizeof(bouton_pins[0]);
 int bouton_aleatoire = 0;
 int led_eteinte = 1;
 
-// Temps limite pression bouton (jeu_deux)
+// Temps limite pression bouton (jeu_un)
 unsigned long temps_ini = 0;
 unsigned long intervalle = 2000;
 
 
-// Simon liste bouton
+// Simon variables
 int temps_simon = 500;
-int counter = 0;
+int step = 0;
 int num_courant = 0;
-String str_num_courant = "";
+int num_courant_joueur = -1;
+const int SIMON_LENGTH_MAX = 10;
 String etat = "simon";
 String liste_simon = "";
-String liste_simon_joueur = "";
 
 //Parametres pour l'encodeur rotatif
 const int clkPin  = 10;
@@ -124,11 +124,47 @@ void setup() {
     pinMode(swPin,INPUT_PULLUP);
 }
 
+
+void reset_game() {
+
+  //Reset LED
+  LED_off();
+
+  // Reset Simon
+  temps_simon = 500;
+  step = 0;
+  num_courant = 0;
+  num_courant_joueur = -1;
+  etat = "simon";
+  liste_simon = "";
+  
+  // Reset jeu_un
+  bouton_aleatoire = 0;
+  led_eteinte = 1;
+  temps_ini = 0;
+  intervalle = 2000;
+  
+  // Reset Mastermind
+  verification_code = 0;
+  similitude = 0;
+  phase = 1;
+  vie = 4;
+  blocage_bouton2 = HIGH;
+  isolement_fonction = 0;
+  
+  // Reset score
+  score = 0;
+
+  // Revenir au menu
+  etape = 0;
+
+}
+
 void jeu_un_next() {
   led_eteinte = 1;
   digitalWrite(bouton_aleatoire - 1, led_eteinte);
   bouton_aleatoire = bouton_pins[random(0,NOMBRE_BOUTON)];
-  delay(200);
+  delay(40);
 }
 
 void jeu_un() {
@@ -140,7 +176,6 @@ void jeu_un() {
   if (led_eteinte == 1) {
     led_eteinte = 0;
     digitalWrite(bouton_aleatoire - 1, led_eteinte);
-    Serial.println(score);
   }
   
   if (led_eteinte == 0) {
@@ -157,51 +192,63 @@ void jeu_un() {
           if (score>0) {score -= 1;}
         }
         else {score += 1;}
-        jeu_un_next();
-        Serial.println(score);
-        
+        jeu_un_next();        
       }
     }  
   }
 }
 
 void simon() {
-    // V1
+    
     if (etat == "simon") {
-      liste_simon += random(0,NOMBRE_BOUTON);
-      Serial.println("Simon "+liste_simon);
+      
       for (int i = 0; i < liste_simon.length(); i++) {
-        str_num_courant = liste_simon[i];
-        num_courant = str_num_courant.toInt();
-        digitalWrite(led_pins[num_courant],0);
+
+        num_courant = liste_simon[step] - '0';
+        digitalWrite(led_pins[num_courant], 0);
         delay(temps_simon);
         LED_off();
         delay(temps_simon);
       }
-      etat = "joueur";
-    }
 
+      etat = "joueur";
+      step = 0;
+    }
+    
+    
     if (etat == "joueur") {
+
       for (int i = 0; i < NOMBRE_BOUTON; i++) {
         if (digitalRead(bouton_pins[i]) == 0) {
-          liste_simon_joueur += i;
-          Serial.println("Joueur " + liste_simon_joueur);
-          delay(200);
+          num_courant_joueur = i;
+          num_courant = liste_simon[step] - '0';
+          break;
         }
       }
-      //?
-      if ((liste_simon_joueur.length() >= 1) || (liste_simon_joueur[-1] != liste_simon[liste_simon_joueur.length() - 1])) {
-        etat == "stop";
+
+      if (num_courant_joueur != num_courant) {
+        return reset_game();
+      }
+      else {
+        step++;
       }
 
-      if ( (liste_simon_joueur.length() == liste_simon.length()) || (liste_simon_joueur == liste_simon)) {
-        etat = "simon";
-        liste_simon_joueur = "";
-        delay(800);
+      if (step == liste_simon.length()) {
+
+        // tous les boutons ont été pressés, ajoutons un nouveau bouton
+        liste_simon += (char) random(NOMBRE_BOUTON);
+        step = 0;
+        etat == "simon";
       }
-      
+
     }
+
+    if (liste_simon.length() == SIMON_LENGTH_MAX) {
+      return reset_game();
+    }
+
 }
+
 
 void afficher_score() {
     lcd.backlight();
@@ -220,10 +267,14 @@ void loop() {
 
     //Etape 4 : le jeu est lancé
     if (etape==4){
-        if ((choix_mode_jeu == 0) || (choix_mode_jeu == 1) || (choix_mode_jeu == 2)){ 
-        jeu_un();
-        afficher_score();
-        codeTimer();
+        if ((choix_mode_jeu == 0) || (choix_mode_jeu == 1) || (choix_mode_jeu == 2)){
+
+          // Réduire le temps durant lequel le bouton est allumé afin d'augmenter la difficulté.
+          if (choix_mode_jeu==2) {intervalle = 1000;}
+
+          jeu_un();
+          afficher_score();
+          codeTimer();
         }
         if (choix_mode_jeu==3){ //Simon
         simon();
@@ -455,6 +506,7 @@ void codeScore(){
 
 
 void mastermind(){
+
   // Etape 1 : Choix du code
   if (phase == 1){
     verification_code = 0;
@@ -642,7 +694,10 @@ void codeTimer(){
     lcd.print("A bientot, Merci");
     delay(10000);
     blocage_bouton = HIGH;
-    etape = 0;
+
+    end_game();
+    reset_game();
+
     lcd.clear();
     lcd.setCursor(3,0);
     lcd.print("Bienvenue");
