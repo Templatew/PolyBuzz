@@ -657,6 +657,7 @@ void mastermind(){
     lcd.print("Decrypteur  ");
     delay(5000);
     isolement_fonction = 2;
+    return end_game();
   }
 
   // Etape 4 : fin perdu
@@ -668,6 +669,7 @@ void mastermind(){
     lcd.print("Crypteur    ");
     delay(5000);
     isolement_fonction = 2;
+    return end_game();
   }
 }
 
