@@ -192,7 +192,7 @@ void jeu_un_next() {
   led_eteinte = 1;
   digitalWrite(bouton_aleatoire - 1, led_eteinte);
   bouton_aleatoire = bouton_pins[random(0,NOMBRE_BOUTON)];
-  delay(40);
+  delay(200);
 }
 
 void jeu_un() {
