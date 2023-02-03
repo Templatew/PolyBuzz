@@ -263,15 +263,13 @@ void simon() {
             step ++;
           }
           else {
-            lcd.clear();
-            lcd.setCursor(0, 0);
-            lcd.print("RIP");
+            return end_game();
           }
           delay(200);
         }
       }
 
-      if (step == liste_simon.length()) {
+      if (step >= liste_simon.length()) {
         step = 0;
         etat == "simon";
         score += 1;
