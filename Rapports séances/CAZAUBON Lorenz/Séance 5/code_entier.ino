@@ -178,6 +178,12 @@ void reset_game() {
   vie = 4;
   blocage_bouton = HIGH;
   isolement_fonction = 0;
+  for (int i = 0, i < NOMBRE_BOUTON, i++) {
+    val[i] = 1;
+    choix_bouton[i] = 1;
+    tentative_bouton[i] = 1;
+    ancien_val[i] = 1;
+  }
   
   // Reset score
   score = 0;
