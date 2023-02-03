@@ -104,26 +104,54 @@ void LED_off() {
 }
 
 void setup() {
-    Serial.begin(9600);
 
-    pinMode_bouton();
-    pinMode_led();
-    LED_off();
+  Serial.begin(9600);
 
-    // Initialisation de l'afficheur
-    lcd.init();
-    lcd.backlight();
-    lcd.setCursor(3,0);
-    lcd.print("Bienvenue");
-    lcd.setCursor(2,1);
-    lcd.print("Tournez-moi!");
-    
-    //Initialisation encodeur rotatif
-    pinMode(clkPin,INPUT);
-    pinMode(dtPin,INPUT);
-    pinMode(swPin,INPUT_PULLUP);
+  pinMode_bouton();
+  pinMode_led();
+  LED_off();
+
+  // Initialisation de l'afficheur
+  lcd.init();
+  lcd.backlight();
+  setup_afficheur();
+
+  //Initialisation encodeur rotatif
+  pinMode(clkPin,INPUT);
+  pinMode(dtPin,INPUT);
+  pinMode(swPin,INPUT_PULLUP);
 }
 
+
+void setup_afficheur() {
+
+  lcd.clear();
+  lcd.setCursor(3,0);
+  lcd.print("Bienvenue");
+  lcd.setCursor(2,1);
+  lcd.print("Tournez-moi!");
+
+}
+
+void end_game() {
+
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Score final:");
+  lcd.setCursor(0,1);
+  lcd.print(score);
+  delay(1000);
+  reset_game();
+
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Fin de la partie");
+  lcd.setCursor(0, 1);
+  lcd.print("A bientot, Merci");
+  delay(1000);
+  setup_afficheur();
+
+}
 
 void reset_game() {
 
@@ -227,7 +255,7 @@ void simon() {
       }
 
       if (num_courant_joueur != num_courant) {
-        return reset_game();
+        return end_game();
       }
       else {
         step++;
@@ -239,16 +267,16 @@ void simon() {
         liste_simon += (char) random(NOMBRE_BOUTON);
         step = 0;
         etat == "simon";
+        score += 1;
       }
 
     }
 
     if (liste_simon.length() == SIMON_LENGTH_MAX) {
-      return reset_game();
+      return end_game();
     }
 
 }
-
 
 void afficher_score() {
     lcd.backlight();
@@ -258,7 +286,6 @@ void afficher_score() {
     lcd.setCursor(7, 0);
     lcd.print(score);
 }
-
 
 void loop() {
 
@@ -276,9 +303,12 @@ void loop() {
           afficher_score();
           codeTimer();
         }
+        
         if (choix_mode_jeu==3){ //Simon
-        simon();
+          simon();
+          afficher_score();
         }
+
         if (choix_mode_jeu==4){ //Mastermind
             if (isolement_fonction==0){
                 blocage_bouton==LOW;
@@ -687,22 +717,7 @@ void codeTimer(){
 
    //Timer arrivé à la fin
    if (timeInit==0) {
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Fin de la partie");
-    lcd.setCursor(0, 1);
-    lcd.print("A bientot, Merci");
-    delay(10000);
-    blocage_bouton = HIGH;
-
     end_game();
-    reset_game();
-
-    lcd.clear();
-    lcd.setCursor(3,0);
-    lcd.print("Bienvenue");
-    lcd.setCursor(2,1);
-    lcd.print("Tournez-moi!");
    }
 }
 
