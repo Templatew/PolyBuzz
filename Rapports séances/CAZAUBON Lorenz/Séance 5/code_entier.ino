@@ -121,7 +121,6 @@ void setup() {
   pinMode(swPin,INPUT_PULLUP);
 }
 
-
 void setup_afficheur() {
 
   lcd.clear();
@@ -332,7 +331,6 @@ void loop() {
   }
 }
 
-
 void readRotary( ) {
   //Etape 1 : mode de jeu
   if (etape==0){
@@ -378,12 +376,11 @@ void readRotary( ) {
         }
         choix_mode_jeu = rotVal;
         if ((choix_mode_jeu == 3 || choix_mode_jeu == 4 || choix_mode_jeu == 5) && (clkState == LOW)){
-          etape = 3;
+          etape = 2;
         }
         delay(200);
     }
   }
-
 
   // Etape 2 : reglage du temps
   if (etape==1 && choix_mode_jeu >= 0 && choix_mode_jeu <= 2){  // Le Simon, Mastermind et Duel n'auront pas besoin de temps
@@ -427,6 +424,11 @@ void readRotary( ) {
     }
   }
 
+  if (etape == 2) {
+    etape = 3;
+    blocage_bouton = LOW;
+    delay(2000);
+  }
 
   // Etape 4 : preparation avant lancement
   if (etape==3){
