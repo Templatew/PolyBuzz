@@ -57,7 +57,7 @@ bool blocage_bouton = HIGH;
 //Variables pour la fonction: Timer
 int tSec = 15;
 int tMin = 1;
-long timeInit=-1;
+unsigned long timeInit=0;
 unsigned long intervalleTemps = 1000;
 unsigned long initialeTemps = 0;
 unsigned long previousMillis = 0;
@@ -254,7 +254,7 @@ void simon() {
         }
       }
 
-      if (num_courant_joueur != num_courant) {
+      if (num_courant_joueur == -1) {
         return end_game();
       }
       else {
