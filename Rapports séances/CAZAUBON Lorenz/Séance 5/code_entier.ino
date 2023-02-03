@@ -242,12 +242,11 @@ void simon() {
       
       for (int i = 0; i < liste_simon.length(); i++) {
 
-        num_courant = liste_simon[step] - '0';
+        num_courant = liste_simon[i] - '0';
         digitalWrite(led_pins[num_courant], 0);
         delay(temps_simon);
         LED_off();
         delay(temps_simon);
-        step ++;
       }
 
       etat = "joueur";
