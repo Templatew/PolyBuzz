@@ -223,6 +223,7 @@ void loop() {
         if ((choix_mode_jeu == 0) || (choix_mode_jeu == 1) || (choix_mode_jeu == 2)){ 
         jeu_un();
         afficher_score();
+        codeTimer();
         }
         if (choix_mode_jeu==3){ //Simon
         simon();
@@ -457,11 +458,12 @@ void mastermind(){
   // Etape 1 : Choix du code
   if (phase == 1){
     verification_code = 0;
-    for (int i=0; i<4; i++) {
+    for (int i=0; i<10; i++) {
       val[i]=digitalRead(bouton_pins[i]); // lecture de l’état de l’entrée 2
   
       if ((val[i]==LOW)&&(ancien_val[i]==HIGH)) {
         choix_bouton[i]=1-choix_bouton[i];
+        delay(20);
       }
       ancien_val[i]=val[i];
   
@@ -477,9 +479,9 @@ void mastermind(){
       }
     }
   
-    if (swState == LOW && verification_code == 2){
+    if (swState == LOW && verification_code == 4){
       phase = 2;
-      for (int i=0; i<4; i++) {
+      for (int i=0; i<10; i++) {
         digitalWrite(led_pins[i], HIGH);
         val[i] = 1;
         ancien_val[i] = 1;
@@ -501,11 +503,12 @@ void mastermind(){
   // Etape 2 : Tentative de trouver le code
   if (phase == 2){
     verification_code = 0;
-    for (int i=0; i<4; i++) {
+    for (int i=0; i<10; i++) {
       val[i]=digitalRead(bouton_pins[i]); // lecture de l’état de l’entrée 2
   
       if ((val[i]==LOW)&&(ancien_val[i]==HIGH)) {
         tentative_bouton[i]=1-tentative_bouton[i];
+        delay(20);
       }
       ancien_val[i]=val[i];
   
@@ -522,7 +525,7 @@ void mastermind(){
     }
 
     similitude = 0;
-    if (swState == LOW && verification_code == 2 && blocage_bouton2 == HIGH){
+    if (swState == LOW && verification_code == 4 && blocage_bouton2 == HIGH){
       blocage_bouton2 = LOW;
       lcd.clear();
       lcd.setCursor(0,0);
@@ -530,19 +533,19 @@ void mastermind(){
       lcd.setCursor(0,1);
       lcd.print("Vie restante:");
       Serial.println("Check en cours");
-      for (int i=0; i<4; i++) {
+      for (int i=0; i<10; i++) {
         Serial.print(choix_bouton[i]);
         Serial.print(" = ");
         Serial.println(tentative_bouton[i]);
         if (choix_bouton[i] == 0 && tentative_bouton[i] == 0){
           similitude += 1;
         }
-        if (similitude == 2){
+        if (similitude == 4){
           Serial.println("vrai");
           phase = 3;
           lcd.clear();
         }
-        if (similitude != 2){
+        if (similitude != 4){
           Serial.print("faux, il y a ");
           Serial.print(similitude);
           Serial.println(" similitude");
