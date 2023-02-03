@@ -232,7 +232,7 @@ void simon() {
       
       for (int i = 0; i < liste_simon.length(); i++) {
 
-        num_courant = liste_simon[step].toInt();
+        num_courant = liste_simon[step] - '0';
         digitalWrite(led_pins[num_courant], 0);
         delay(temps_simon);
         LED_off();
@@ -249,7 +249,7 @@ void simon() {
       for (int i = 0; i < NOMBRE_BOUTON; i++) {
         if (digitalRead(bouton_pins[i]) == 0) {
           num_courant_joueur = i;
-          num_courant = liste_simon[step].toInt();
+          num_courant = liste_simon[step] - '0';
           if (num_courant_joueur == num_courant) {
             step ++;
           }
