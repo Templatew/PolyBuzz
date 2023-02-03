@@ -418,7 +418,7 @@ void readRotary( ) {
 
 
   // Etape 2 : reglage du temps
-  if (etape==1 && choix_mode_jeu >= 0 && choix_mode_jeu < 2){  // Le Simon, Mastermind et Duel n'auront pas besoin de temps
+  if (etape==1 && choix_mode_jeu >= 0 && choix_mode_jeu <= 2){  // Le Simon, Mastermind et Duel n'auront pas besoin de temps
     // gestion position
     clkState = digitalRead(clkPin);
     if ((clkLast == LOW) && (clkState == HIGH)) {//rotary moving
