@@ -57,7 +57,7 @@ bool blocage_bouton = HIGH;
 //Variables pour la fonction: Timer
 int tSec = 15;
 int tMin = 1;
-unsigned long timeInit=0;
+long timeInit=-1;
 unsigned long intervalleTemps = 1000;
 unsigned long initialeTemps = 0;
 unsigned long previousMillis = 0;
@@ -525,15 +525,11 @@ void clickEncodeur(){
   swLast = swState;
 }
 
-
-
 void codeScore(){
   // Score
   lcd.setCursor(0, 0);
   lcd.print("Score: ");
 }
-
-
 
 void mastermind(){
 
@@ -674,8 +670,6 @@ void mastermind(){
   }
 }
 
-
-
 void codeTimer(){
   //Envoie du temps choisit par le joueur
   //à la fonction qui calcule
@@ -721,14 +715,10 @@ void codeTimer(){
    }
 }
 
-
-
 //Conversion en sec du Timer
 int timeToCounter(int m,int s){
   return m*60+s;
 }
-
-
 
 //Fonction de calcule du temps choisit
 void counterToTime(long cnt){
