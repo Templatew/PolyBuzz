@@ -294,55 +294,41 @@ void afficher_score() {
 
 void loop() {
 
-    //Post gameplay
-    readRotary();
+  //Post gameplay
+  readRotary();
 
-    //Etape 4 : le jeu est lancé
-    if (etape==4){
-        if ((choix_mode_jeu == 0) || (choix_mode_jeu == 1) || (choix_mode_jeu == 2)){
+  //Etape 4 : le jeu est lancé
+  if (etape==4){
 
-          // Réduire le temps durant lequel le bouton est allumé afin d'augmenter la difficulté.
-          if (choix_mode_jeu==2) {intervalle = 1000;}
+    //Jeu 1 (test réflexes)
+    if ((choix_mode_jeu == 0) || (choix_mode_jeu == 1) || (choix_mode_jeu == 2)){
 
-          afficher_score();
-          jeu_un();
-          codeTimer();
-        }
+      // Réduire le temps durant lequel le bouton est allumé afin d'augmenter la difficulté.
+      if (choix_mode_jeu==2) {intervalle = 1000;}
 
-        if (choix_mode_jeu==3){ //Simon
-          afficher_score();
-          simon();
-        }
-
-        if (choix_mode_jeu==4){ //Mastermind
-            if (isolement_fonction==0){
-                blocage_bouton==LOW;
-                lcd.setCursor(2,0);
-                lcd.print("Choissiez un");
-                lcd.setCursor(0,1);
-                lcd.print("code a 4 boutons");
-                for (int i=0; i<4; i++) {
-                pinMode(led_pins[i], OUTPUT); // l'I/O 2 est utilisée comme une sortie
-                pinMode(bouton_pins[i], INPUT_PULLUP); // l'I/O 7 est utilisée comme une sortie
-                }
-                isolement_fonction = 1;
-            }
-            if (isolement_fonction==1){
-                mastermind();
-            }
-            if (isolement_fonction==2){
-                blocage_bouton2==HIGH;
-                etape = 0;
-            }
-        }
-        if (choix_mode_jeu==5){ //Duel
-        codeScore();
-        }
+      afficher_score();
+      jeu_un();
+      codeTimer();
     }
-        
+
+    //Simon
+    if (choix_mode_jeu==3){ 
+      afficher_score();
+      simon();
+    }
     
-    
+    //Mastermind
+    if (choix_mode_jeu==4){ 
+      mastermind();
+    }
+
+    //Duel
+    if (choix_mode_jeu==5){ 
+    codeScore();
+    }
+  }
 }
+
 
 void readRotary( ) {
   //Etape 1 : mode de jeu
@@ -532,144 +518,174 @@ void codeScore(){
   lcd.print("Score: ");
 }
 
-void mastermind(){
+void mastermind_welcome() {
+  blocage_bouton==LOW;
+  lcd.setCursor(2,0);
+  lcd.print("Choissiez un");
+  lcd.setCursor(0,1);
+  lcd.print("code a 4 boutons");
+  isolement_fonction = 1;
+}
 
-  // Etape 1 : Choix du code
-  if (phase == 1){
-    verification_code = 0;
+void mastermin_phase_une() {
+  verification_code = 0;
+  for (int i=0; i<10; i++) {
+    val[i]=digitalRead(bouton_pins[i]);
+
+    if ((val[i]==LOW)&&(ancien_val[i]==HIGH)) {
+      choix_bouton[i]=1-choix_bouton[i];
+      delay(20);
+    }
+    ancien_val[i]=val[i];
+
+    // allume la LED
+    if (choix_bouton[i]==LOW) { 
+      digitalWrite(led_pins[i], LOW);
+    }
+
+    // éteint la LED
+    if (choix_bouton[i]==HIGH) { 
+      digitalWrite(led_pins[i], HIGH);
+    }
+
+    if (digitalRead(led_pins[i])==LOW){
+      verification_code += 1;
+    }
+  }
+
+  if (swState == LOW && verification_code == 4){
+    phase = 2;
     for (int i=0; i<10; i++) {
-      val[i]=digitalRead(bouton_pins[i]); // lecture de l’état de l’entrée 2
-  
-      if ((val[i]==LOW)&&(ancien_val[i]==HIGH)) {
-        choix_bouton[i]=1-choix_bouton[i];
-        delay(20);
-      }
-      ancien_val[i]=val[i];
-  
-      if (choix_bouton[i]==LOW) { // allume la LED
-        digitalWrite(led_pins[i], LOW);
-      }
-      if (choix_bouton[i]==HIGH) { // éteint la LED
-        digitalWrite(led_pins[i], HIGH);
-      }
-
-      if (digitalRead(led_pins[i])==LOW){
-        verification_code += 1;
-      }
+      digitalWrite(led_pins[i], HIGH);
+      val[i] = 1;
+      ancien_val[i] = 1;
     }
-  
-    if (swState == LOW && verification_code == 4){
-      phase = 2;
-      for (int i=0; i<10; i++) {
-        digitalWrite(led_pins[i], HIGH);
-        val[i] = 1;
-        ancien_val[i] = 1;
-      }
-      Serial.println("Validé");
-      Serial.println("Passage à l'étape 2");
-      lcd.clear();
-      lcd.setCursor(2,0);
-      lcd.print("Code valide");
-      delay(3000);
-      lcd.clear();
-      lcd.setCursor(3,0);
-      lcd.print("Trouvez le");
-      lcd.setCursor(0,1);
-      lcd.print("code a 4 boutons");
+    Serial.println("Validé");
+    Serial.println("Passage à l'étape 2");
+    lcd.clear();
+    lcd.setCursor(2,0);
+    lcd.print("Code valide");
+    delay(3000);
+    lcd.clear();
+    lcd.setCursor(3,0);
+    lcd.print("Trouvez le");
+    lcd.setCursor(0,1);
+    lcd.print("code a 4 boutons");
+  }
+}
+
+void mastermin_phase_deux() {
+  verification_code = 0;
+  for (int i=0; i<10; i++) {
+    val[i]=digitalRead(bouton_pins[i]); // lecture de l’état de l’entrée 2
+
+    if ((val[i]==LOW)&&(ancien_val[i]==HIGH)) {
+      tentative_bouton[i]=1-tentative_bouton[i];
+      delay(20);
+    }
+    ancien_val[i]=val[i];
+
+    if (tentative_bouton[i]==LOW) { // allume la LED
+      digitalWrite(led_pins[i], LOW);
+    }
+    if (tentative_bouton[i]==HIGH) { // éteint la LED
+      digitalWrite(led_pins[i], HIGH);
+    }
+
+    if (digitalRead(led_pins[i])==LOW){
+      verification_code += 1;
     }
   }
 
-  // Etape 2 : Tentative de trouver le code
-  if (phase == 2){
-    verification_code = 0;
+  similitude = 0;
+  if (swState == LOW && verification_code == 4 && blocage_bouton2 == HIGH){
+    blocage_bouton2 = LOW;
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("Similitude: ");
+    lcd.setCursor(0,1);
+    lcd.print("Vie restante:");
+    Serial.println("Check en cours");
     for (int i=0; i<10; i++) {
-      val[i]=digitalRead(bouton_pins[i]); // lecture de l’état de l’entrée 2
-  
-      if ((val[i]==LOW)&&(ancien_val[i]==HIGH)) {
-        tentative_bouton[i]=1-tentative_bouton[i];
-        delay(20);
+      Serial.print(choix_bouton[i]);
+      Serial.print(" = ");
+      Serial.println(tentative_bouton[i]);
+      if (choix_bouton[i] == 0 && tentative_bouton[i] == 0){
+        similitude += 1;
       }
-      ancien_val[i]=val[i];
-  
-      if (tentative_bouton[i]==LOW) { // allume la LED
-        digitalWrite(led_pins[i], LOW);
+      if (similitude == 4){
+        Serial.println("vrai");
+        phase = 3;
+        lcd.clear();
       }
-      if (tentative_bouton[i]==HIGH) { // éteint la LED
-        digitalWrite(led_pins[i], HIGH);
+      if (similitude != 4){
+        Serial.print("faux, il y a ");
+        Serial.print(similitude);
+        Serial.println(" similitude");
       }
-
-      if (digitalRead(led_pins[i])==LOW){
-        verification_code += 1;
+      if (vie == 1){
+        phase = 4;
+        lcd.clear();
       }
     }
-
-    similitude = 0;
-    if (swState == LOW && verification_code == 4 && blocage_bouton2 == HIGH){
-      blocage_bouton2 = LOW;
-      lcd.clear();
-      lcd.setCursor(0,0);
-      lcd.print("Similitude: ");
-      lcd.setCursor(0,1);
-      lcd.print("Vie restante:");
-      Serial.println("Check en cours");
-      for (int i=0; i<10; i++) {
-        Serial.print(choix_bouton[i]);
-        Serial.print(" = ");
-        Serial.println(tentative_bouton[i]);
-        if (choix_bouton[i] == 0 && tentative_bouton[i] == 0){
-          similitude += 1;
-        }
-        if (similitude == 4){
-          Serial.println("vrai");
-          phase = 3;
-          lcd.clear();
-        }
-        if (similitude != 4){
-          Serial.print("faux, il y a ");
-          Serial.print(similitude);
-          Serial.println(" similitude");
-        }
-        if (vie == 1){
-          phase = 4;
-          lcd.clear();
-        }
-      }
-      vie -= 1;
-      Serial.print("vie restante");
-      Serial.println(vie);
-      lcd.setCursor(14,0);
-      lcd.print(similitude);
-      lcd.setCursor(14,1);
-      lcd.print(vie);
-    }
-
-    if (swState == HIGH){
-      blocage_bouton2 = HIGH;
-    }
+    vie -= 1;
+    Serial.print("vie restante");
+    Serial.println(vie);
+    lcd.setCursor(14,0);
+    lcd.print(similitude);
+    lcd.setCursor(14,1);
+    lcd.print(vie);
   }
 
-  // Etape 3 : fin gagné
-  if (phase == 3) {
-    Serial.println("Bravo");
-    lcd.setCursor(2,0);
-    lcd.print("Victoire du  ");
-    lcd.setCursor(3,1);
-    lcd.print("Decrypteur  ");
-    delay(5000);
-    isolement_fonction = 2;
-    return end_game();
+  if (swState == HIGH){
+    blocage_bouton2 = HIGH;
+  }
+}
+
+void mastermind_phase_trois() {
+  Serial.println("Bravo");
+  lcd.setCursor(2,0);
+  lcd.print("Victoire du  ");
+  lcd.setCursor(3,1);
+  lcd.print("Decrypteur  ");;
+}
+
+void mastermin_phase_quatre() {
+  Serial.println("Perdu");
+  lcd.setCursor(2,0);
+  lcd.print("Victoire du  ");
+  lcd.setCursor(4,1);
+  lcd.print("Crypteur    ");
+}
+
+void mastermind() {
+
+  if (isolement_fonction==0){
+    mastermind_welcome();
   }
 
-  // Etape 4 : fin perdu
-  if (phase == 4) {
-    Serial.println("Perdu");
-    lcd.setCursor(2,0);
-    lcd.print("Victoire du  ");
-    lcd.setCursor(4,1);
-    lcd.print("Crypteur    ");
-    delay(5000);
-    isolement_fonction = 2;
-    return end_game();
+  else {
+
+    // Etape 1 : Choix du code
+    if (phase == 1){mastermin_phase_une();
+    }
+
+    // Etape 2 : Tentative de trouver le code
+    if (phase == 2){
+      mastermin_phase_deux();
+    }
+
+    // Etape 3 ou 4 : fin
+    if ((phase == 3) || (phase == 4)) {
+      if (phase == 3) {
+        mastermind_phase_trois();
+      }
+      else {
+        mastermin_phase_quatre();
+      }
+      delay(5000);
+      return end_game();
+    }
   }
 }
 
