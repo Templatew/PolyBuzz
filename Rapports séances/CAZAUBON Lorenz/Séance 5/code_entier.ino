@@ -110,6 +110,7 @@ void setup() {
   pinMode_bouton();
   pinMode_led();
   LED_off();
+  randomSeed(millis());
 
   // Initialisation de l'afficheur
   lcd.init();
@@ -271,8 +272,10 @@ void simon() {
 
       if (step >= liste_simon.length()) {
         step = 0;
-        etat == "simon";
+        etat = "simon";
         score += 1;
+
+        
       }
 
     }
