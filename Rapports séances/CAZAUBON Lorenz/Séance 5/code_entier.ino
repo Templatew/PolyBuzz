@@ -352,52 +352,33 @@ void readRotary( ) {
             }
         }
 
+        lcd.clear();
+        lcd.setCursor(0,0);
+        lcd.print("Mode de Jeu :");
+        lcd.setCursor(0,1);
+
         // Selection mode de jeu en tournant l'encodeur rotatif
         if (rotVal==0) {
-            lcd.clear();
-            lcd.setCursor(0,0);
-            lcd.print("Mode de Jeu :");
-            lcd.setCursor(0,1);
-            lcd.print("Reflexe Easy");
+          lcd.print("Reflexe Easy");
         }
         if (rotVal==1) {
-            lcd.clear();
-            lcd.setCursor(0,0);
-            lcd.print("Mode de Jeu :");
-            lcd.setCursor(0,1);
-            lcd.print("Reflexe Normal");
+          lcd.print("Reflexe Normal");
         }
         if (rotVal==2) {
-            lcd.clear();
-            lcd.setCursor(0,0);
-            lcd.print("Mode de Jeu :");
-            lcd.setCursor(0,1);
-            lcd.print("Reflexe Hard");
+          lcd.print("Reflexe Hard");
         }
         if (rotVal==3) {
-            lcd.clear();
-            lcd.setCursor(0,0);
-            lcd.print("Mode de Jeu :");
-            lcd.setCursor(0,1);
-            lcd.print("Simon");
+          lcd.print("Simon");
         }
         if (rotVal==4) {
-            lcd.clear();
-            lcd.setCursor(0,0);
-            lcd.print("Mode de Jeu :");
-            lcd.setCursor(0,1);
-            lcd.print("Mastermind");
+          lcd.print("Mastermind");
         }
         if (rotVal==5) {
-            lcd.clear();
-            lcd.setCursor(0,0);
-            lcd.print("Mode de Jeu :");
-            lcd.setCursor(0,1);
-            lcd.print("Duel");
+          lcd.print("Duel");
         }
         choix_mode_jeu = rotVal;
         if ((choix_mode_jeu == 3 || choix_mode_jeu == 4 || choix_mode_jeu == 5) && (clkState == LOW)){
-          etape = 2;
+          etape = 3;
         }
         delay(200);
     }
@@ -423,21 +404,19 @@ void readRotary( ) {
                 rotVal = 0;
             }
         }
-
+        
+        lcd.setCursor(4,1);
         if (rotVal==0) {
-            lcd.setCursor(4,1);
             lcd.print("00:30");
             tSec = 30;
             tMin = 0;
         }
         if (rotVal==1) {
-            lcd.setCursor(4,1);
             lcd.print("00:45");
             tSec = 45;
             tMin = 0;
         }
         if (rotVal==2) {
-            lcd.setCursor(4,1);
             lcd.print("01:00");
             tSec = 0;
             tMin = 1;
@@ -446,14 +425,6 @@ void readRotary( ) {
         timeInit=timeToCounter(tMin,tSec);
         delay(200);
     }
-  }
-
-
-  // Etape 3 : verification, Serial uniquement
-  if (etape==2){
-    etape = 3;
-    blocage_bouton = LOW;
-    delay(2000);
   }
 
 
@@ -472,7 +443,6 @@ void readRotary( ) {
      lcd.clear();
      etape = 4;
   }
- 
   clickEncodeur();
 }
 
