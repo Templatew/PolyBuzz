@@ -208,7 +208,7 @@ void jeu_un() {
   
   if (led_eteinte == 0) {
 
-    if ((choix_mode_jeu == 1) && (millis() - temps_ini > intervalle)) {
+    if (((choix_mode_jeu == 1) || (choix_mode_jeu == 2)) && (millis() - temps_ini > intervalle)) {
         jeu_un_next();
         temps_ini += intervalle;
     }
