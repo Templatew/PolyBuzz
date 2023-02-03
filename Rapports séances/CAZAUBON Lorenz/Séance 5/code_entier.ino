@@ -254,8 +254,12 @@ void simon() {
             step ++;
           }
           else {
-            return end_game();
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("FDP");
+            
           }
+          delay(200);
         }
       }
 
