@@ -628,7 +628,7 @@ void mastermind(){
           Serial.print(similitude);
           Serial.println(" similitude");
         }
-        if (vie == 0){
+        if (vie == 1){
           phase = 4;
           lcd.clear();
         }
