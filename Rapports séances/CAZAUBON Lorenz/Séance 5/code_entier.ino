@@ -33,7 +33,7 @@ int step = 0;
 int num_courant = 0;
 int num_courant_joueur = -1;
 const int SIMON_LENGTH_MAX = 10;
-String etat = "simon";
+String etat = "first";
 String liste_simon = "";
 
 //Parametres pour l'encodeur rotatif
@@ -228,6 +228,11 @@ void jeu_un() {
 
 void simon() {
     
+    if (etat == "first") {
+      randomSeed(millis());
+      etat = "simon";
+    }
+
     if (etat == "simon") {
 
       if (step == 0) {
