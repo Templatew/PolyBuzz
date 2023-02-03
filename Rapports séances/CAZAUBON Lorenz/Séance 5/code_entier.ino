@@ -250,15 +250,13 @@ void simon() {
         if (digitalRead(bouton_pins[i]) == 0) {
           num_courant_joueur = i;
           num_courant = liste_simon[step].toInt();
-          break;
+          if (num_courant_joueur == num_courant) {
+            step ++;
+          }
+          else {
+            return end_game();
+          }
         }
-      }
-
-      if (num_courant_joueur != num_courant) {
-        return end_game();
-      }
-      else {
-        step++;
       }
 
       if (step == liste_simon.length()) {
