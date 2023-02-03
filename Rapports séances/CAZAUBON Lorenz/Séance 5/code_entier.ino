@@ -453,7 +453,7 @@ void readRotary( ) {
 void clickEncodeur(){
   clkLast = clkState;
   swState = digitalRead(swPin);
-  if (swState == LOW && swLast == HIGH && blocage_bouton==HIGH) {
+  if (swState == LOW && swLast == HIGH && blocage_bouton==HIGH && etape<2) {  
       lcd.clear();
       lcd.setCursor(0,0);
       lcd.print("Validation etape");
