@@ -247,6 +247,7 @@ void simon() {
         delay(temps_simon);
         LED_off();
         delay(temps_simon);
+        step ++;
       }
 
       etat = "joueur";
