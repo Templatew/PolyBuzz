@@ -470,12 +470,8 @@ void readRotary( ) {
   if (etape==2){
     Serial.println("Pret à jouer");
     Serial.print("Mode de jeu : ");
-    if (choix_mode_jeu==0){Serial.print("Reflexe Facile");}
-    if (choix_mode_jeu==1){Serial.print("Reflexe Moyen");}
-    if (choix_mode_jeu==2){Serial.print("Reflexe Difficile");}
-    if (choix_mode_jeu==3){Serial.print("Simon");}
-    if (choix_mode_jeu==4){Serial.print("Mastermind");}
-    if (choix_mode_jeu==5){Serial.print("Duel");}
+    const String texte[6] = {"Reflexe Facile", "Reflexe Moyen", "Reflexe Difficile", "Simon", "Mastermind", "Duel"};
+    Serial.print(texte[choix_mode_jeu]);
     Serial.print(" / Temps de jeu : ");
     if (temps==0){Serial.println("00:30");}
     if (temps==1){Serial.println("00:45");}
