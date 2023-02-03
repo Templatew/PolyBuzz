@@ -85,7 +85,6 @@ void pinMode_bouton() {
   for (int i = 0; i < NOMBRE_BOUTON; i++) { 
     pinMode(bouton_pins[i], INPUT_PULLUP);
   }
-  Serial.println("Bouton ok");
 }
 
 void pinMode_led() {
@@ -94,7 +93,6 @@ void pinMode_led() {
   for (int i = 0; i < NOMBRE_BOUTON; i++) { 
     pinMode(led_pins[i], OUTPUT);
   }
-  Serial.println("LED ok");
 }
 
 void LED_off() {
@@ -336,7 +334,6 @@ void readRotary( ) {
     // Gestion position
     clkState = digitalRead(clkPin);
     if ((clkLast == LOW) && (clkState == HIGH)) { //rotary moving
-        Serial.print("Mode de jeu : ");
         if (digitalRead(dtPin) == HIGH) {
             rotVal = rotVal - 1;
             if ( rotVal < 0 ) {
@@ -352,7 +349,6 @@ void readRotary( ) {
 
         // Selection mode de jeu en tournant l'encodeur rotatif
         if (rotVal==0) {
-            Serial.println("Reflexe Facile");
             lcd.clear();
             lcd.setCursor(0,0);
             lcd.print("Mode de Jeu :");
@@ -360,7 +356,6 @@ void readRotary( ) {
             lcd.print("Reflexe Easy");
         }
         if (rotVal==1) {
-            Serial.println("Reflexe Moyen");
             lcd.clear();
             lcd.setCursor(0,0);
             lcd.print("Mode de Jeu :");
@@ -368,7 +363,6 @@ void readRotary( ) {
             lcd.print("Reflexe Normal");
         }
         if (rotVal==2) {
-            Serial.println("Reflexe Difficile");
             lcd.clear();
             lcd.setCursor(0,0);
             lcd.print("Mode de Jeu :");
@@ -376,7 +370,6 @@ void readRotary( ) {
             lcd.print("Reflexe Hard");
         }
         if (rotVal==3) {
-            Serial.println("Simon");
             lcd.clear();
             lcd.setCursor(0,0);
             lcd.print("Mode de Jeu :");
@@ -384,7 +377,6 @@ void readRotary( ) {
             lcd.print("Simon");
         }
         if (rotVal==4) {
-            Serial.println("Mastermind");
             lcd.clear();
             lcd.setCursor(0,0);
             lcd.print("Mode de Jeu :");
@@ -392,7 +384,6 @@ void readRotary( ) {
             lcd.print("Mastermind");
         }
         if (rotVal==5) {
-            Serial.println("Duel");
             lcd.clear();
             lcd.setCursor(0,0);
             lcd.print("Mode de Jeu :");
@@ -413,7 +404,6 @@ void readRotary( ) {
     // gestion position
     clkState = digitalRead(clkPin);
     if ((clkLast == LOW) && (clkState == HIGH)) {//rotary moving
-        Serial.print("Temps de jeu : ");
         lcd.setCursor(0,0);
         lcd.print("Temps de Jeu :  ");
         if (digitalRead(dtPin) == HIGH) {
@@ -430,21 +420,18 @@ void readRotary( ) {
         }
 
         if (rotVal==0) {
-            Serial.println("00:30");
             lcd.setCursor(4,1);
             lcd.print("00:30");
             tSec = 30;
             tMin = 0;
         }
         if (rotVal==1) {
-            Serial.println("00:45");
             lcd.setCursor(4,1);
             lcd.print("00:45");
             tSec = 45;
             tMin = 0;
         }
         if (rotVal==2) {
-            Serial.println("01:00");
             lcd.setCursor(4,1);
             lcd.print("01:00");
             tSec = 0;
@@ -459,14 +446,6 @@ void readRotary( ) {
 
   // Etape 3 : verification, Serial uniquement
   if (etape==2){
-    Serial.println("Pret à jouer");
-    Serial.print("Mode de jeu : ");
-    const String texte[6] = {"Reflexe Facile", "Reflexe Moyen", "Reflexe Difficile", "Simon", "Mastermind", "Duel"};
-    Serial.print(texte[choix_mode_jeu]);
-    Serial.print(" / Temps de jeu : ");
-    if (temps==0){Serial.println("00:30");}
-    if (temps==1){Serial.println("00:45");}
-    if (temps==2){Serial.println("01:00");}
     etape = 3;
     blocage_bouton = LOW;
     delay(2000);
@@ -504,8 +483,6 @@ void clickEncodeur(){
       lcd.setCursor(7,1);
       lcd.print("0");
       lcd.print(etape);
-      Serial.print("Validation de l'étape :");
-      Serial.println(etape);
       etape += 1;
       delay(100);//debounce
   }
@@ -560,8 +537,6 @@ void mastermin_phase_une() {
       val[i] = 1;
       ancien_val[i] = 1;
     }
-    Serial.println("Validé");
-    Serial.println("Passage à l'étape 2");
     lcd.clear();
     lcd.setCursor(2,0);
     lcd.print("Code valide");
@@ -605,23 +580,13 @@ void mastermin_phase_deux() {
     lcd.print("Similitude: ");
     lcd.setCursor(0,1);
     lcd.print("Vie restante:");
-    Serial.println("Check en cours");
     for (int i=0; i<10; i++) {
-      Serial.print(choix_bouton[i]);
-      Serial.print(" = ");
-      Serial.println(tentative_bouton[i]);
       if (choix_bouton[i] == 0 && tentative_bouton[i] == 0){
         similitude += 1;
       }
       if (similitude == 4){
-        Serial.println("vrai");
         phase = 3;
         lcd.clear();
-      }
-      if (similitude != 4){
-        Serial.print("faux, il y a ");
-        Serial.print(similitude);
-        Serial.println(" similitude");
       }
       if (vie == 1){
         phase = 4;
@@ -629,8 +594,6 @@ void mastermin_phase_deux() {
       }
     }
     vie -= 1;
-    Serial.print("vie restante");
-    Serial.println(vie);
     lcd.setCursor(14,0);
     lcd.print(similitude);
     lcd.setCursor(14,1);
@@ -643,7 +606,6 @@ void mastermin_phase_deux() {
 }
 
 void mastermind_phase_trois() {
-  Serial.println("Bravo");
   lcd.setCursor(2,0);
   lcd.print("Victoire du  ");
   lcd.setCursor(3,1);
@@ -651,7 +613,6 @@ void mastermind_phase_trois() {
 }
 
 void mastermin_phase_quatre() {
-  Serial.println("Perdu");
   lcd.setCursor(2,0);
   lcd.print("Victoire du  ");
   lcd.setCursor(4,1);
