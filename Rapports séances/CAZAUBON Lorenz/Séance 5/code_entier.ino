@@ -34,7 +34,7 @@ int num_courant = 0;
 int num_courant_joueur = -1;
 const int SIMON_LENGTH_MAX = 10;
 String etat = "simon";
-String liste_simon = "";
+String liste_simon = (char) random(NOMBRE_BOUTON);
 
 //Parametres pour l'encodeur rotatif
 const int clkPin  = 10;
@@ -272,9 +272,9 @@ void simon() {
 
     }
 
-    // if (liste_simon.length() == SIMON_LENGTH_MAX) {
-    //   return end_game();
-    // }
+    if (liste_simon.length() == SIMON_LENGTH_MAX) {
+      return end_game();
+    }
 
 }
 
