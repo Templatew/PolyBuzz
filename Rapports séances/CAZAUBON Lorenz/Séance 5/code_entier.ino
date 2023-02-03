@@ -303,7 +303,7 @@ void loop() {
           afficher_score();
           codeTimer();
         }
-        
+
         if (choix_mode_jeu==3){ //Simon
           simon();
           afficher_score();
