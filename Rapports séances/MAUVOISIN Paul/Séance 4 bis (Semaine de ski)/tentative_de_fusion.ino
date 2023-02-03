@@ -16,7 +16,7 @@ bool swState  = HIGH;
 bool swLast   = HIGH;
 
 //Variables pour la fonction: readRotaty
-int choix_mode = 0;
+int choix_mode_jeu = 0;
 int temps = 0;
 int etape = 0;
 bool blocage_bouton = HIGH;
@@ -31,13 +31,11 @@ unsigned long previousMillis = 0;
 unsigned long currentMillis = 0;
 
 //Variables pour la fonction Mastermind
-const int led[]={5, 6, 7, 12}; //on définit une constante de type entier
-const int bouton[]={8, 9, 10, 13}; //on définit une autre constante de type entier
 
-int val[]={1, 1, 1, 1}; // déclaration d’une variable globale qui mémorise l’état du bouton
-int choix_bouton[]={1, 1, 1, 1};
-int tentative_bouton[]={1, 1, 1, 1};
-int ancien_val[]={1, 1, 1, 1};
+int val[]= int[NOMBRE_BOUTON]; // déclaration d’une variable globale qui mémorise l’état du bouton_pins
+int choix_bouton[]=int[NOMBRE_BOUTON];
+int tentative_bouton[]=int[NOMBRE_BOUTON];
+int ancien_val[]=int[NOMBRE_BOUTON];
 int verification_code = 0;
 int similitude = 0;
 int phase = 1;
@@ -74,22 +72,22 @@ void loop() {
 
   //Etape 4 : le jeu est lancé
   if (etape==4){
-    if (choix_mode==0){ //Reflexe Easy
+    if (choix_mode_jeu==0){ //Reflexe Easy
       codeScore();
       codeTimer();
     }
-    if (choix_mode==1){ //Reflexe Normal
+    if (choix_mode_jeu==1){ //Reflexe Normal
       codeScore();
       codeTimer();
     }
-    if (choix_mode==2){ //Reflexe Hard
+    if (choix_mode_jeu==2){ //Reflexe Hard
       codeScore();
       codeTimer();
     }
-    if (choix_mode==3){ //Simon
+    if (choix_mode_jeu==3){ //Simon
       codeScore();
     }
-    if (choix_mode==4){ //Mastermind
+    if (choix_mode_jeu==4){ //Mastermind
       if (isolement_fonction==0){
         blocage_bouton==LOW;
         lcd.setCursor(2,0);
@@ -97,8 +95,8 @@ void loop() {
         lcd.setCursor(0,1);
         lcd.print("code a 4 boutons");
         for (int i=0; i<4; i++) {
-          pinMode(led[i], OUTPUT); // l'I/O 2 est utilisée comme une sortie
-          pinMode(bouton[i], INPUT_PULLUP); // l'I/O 7 est utilisée comme une sortie
+          pinMode(led_pins[i], OUTPUT); // l'I/O 2 est utilisée comme une sortie
+          pinMode(bouton_pins[i], INPUT_PULLUP); // l'I/O 7 est utilisée comme une sortie
         }
         isolement_fonction = 1;
       }
@@ -110,7 +108,7 @@ void loop() {
         etape = 0;
       }
     }
-    if (choix_mode==5){ //Duel
+    if (choix_mode_jeu==5){ //Duel
       codeScore();
     }
   }
@@ -186,8 +184,8 @@ void readRotary( ) {
             lcd.setCursor(0,1);
             lcd.print("Duel");
         }
-        choix_mode = rotVal;
-        if ((choix_mode == 3 || choix_mode == 4 || choix_mode == 5) && (clkState == LOW)){
+        choix_mode_jeu = rotVal;
+        if ((choix_mode_jeu == 3 || choix_mode_jeu == 4 || choix_mode_jeu == 5) && (clkState == LOW)){
           etape = 2;
         }
         delay(200);
@@ -196,7 +194,7 @@ void readRotary( ) {
 
 
   // Etape 2 : reglage du temps
-  if (etape==1 && choix_mode >= 0 && choix_mode < 2){  // Le Simon, Mastermind et Duel n'auront pas besoin de temps
+  if (etape==1 && choix_mode_jeu >= 0 && choix_mode_jeu < 2){  // Le Simon, Mastermind et Duel n'auront pas besoin de temps
     // gestion position
     clkState = digitalRead(clkPin);
     if ((clkLast == LOW) && (clkState == HIGH)) {//rotary moving
@@ -248,12 +246,12 @@ void readRotary( ) {
   if (etape==2){
     Serial.println("Pret à jouer");
     Serial.print("Mode de jeu : ");
-    if (choix_mode==0){Serial.print("Reflexe Facile");}
-    if (choix_mode==1){Serial.print("Reflexe Moyen");}
-    if (choix_mode==2){Serial.print("Reflexe Difficile");}
-    if (choix_mode==3){Serial.print("Simon");}
-    if (choix_mode==4){Serial.print("Mastermind");}
-    if (choix_mode==5){Serial.print("Duel");}
+    if (choix_mode_jeu==0){Serial.print("Reflexe Facile");}
+    if (choix_mode_jeu==1){Serial.print("Reflexe Moyen");}
+    if (choix_mode_jeu==2){Serial.print("Reflexe Difficile");}
+    if (choix_mode_jeu==3){Serial.print("Simon");}
+    if (choix_mode_jeu==4){Serial.print("Mastermind");}
+    if (choix_mode_jeu==5){Serial.print("Duel");}
     Serial.print(" / Temps de jeu : ");
     if (temps==0){Serial.println("00:30");}
     if (temps==1){Serial.println("00:45");}
@@ -319,7 +317,7 @@ void mastermind(){
   if (phase == 1){
     verification_code = 0;
     for (int i=0; i<4; i++) {
-      val[i]=digitalRead(bouton[i]); // lecture de l’état de l’entrée 2
+      val[i]=digitalRead(bouton_pins[i]); // lecture de l’état de l’entrée 2
   
       if ((val[i]==LOW)&&(ancien_val[i]==HIGH)) {
         choix_bouton[i]=1-choix_bouton[i];
@@ -327,13 +325,13 @@ void mastermind(){
       ancien_val[i]=val[i];
   
       if (choix_bouton[i]==LOW) { // allume la LED
-        digitalWrite(led[i], LOW);
+        digitalWrite(led_pins[i], LOW);
       }
       if (choix_bouton[i]==HIGH) { // éteint la LED
-        digitalWrite(led[i], HIGH);
+        digitalWrite(led_pins[i], HIGH);
       }
 
-      if (digitalRead(led[i])==LOW){
+      if (digitalRead(led_pins[i])==LOW){
         verification_code += 1;
       }
     }
@@ -341,7 +339,7 @@ void mastermind(){
     if (swState == LOW && verification_code == 2){
       phase = 2;
       for (int i=0; i<4; i++) {
-        digitalWrite(led[i], HIGH);
+        digitalWrite(led_pins[i], HIGH);
         val[i] = 1;
         ancien_val[i] = 1;
       }
@@ -363,7 +361,7 @@ void mastermind(){
   if (phase == 2){
     verification_code = 0;
     for (int i=0; i<4; i++) {
-      val[i]=digitalRead(bouton[i]); // lecture de l’état de l’entrée 2
+      val[i]=digitalRead(bouton_pins[i]); // lecture de l’état de l’entrée 2
   
       if ((val[i]==LOW)&&(ancien_val[i]==HIGH)) {
         tentative_bouton[i]=1-tentative_bouton[i];
@@ -371,13 +369,13 @@ void mastermind(){
       ancien_val[i]=val[i];
   
       if (tentative_bouton[i]==LOW) { // allume la LED
-        digitalWrite(led[i], LOW);
+        digitalWrite(led_pins[i], LOW);
       }
       if (tentative_bouton[i]==HIGH) { // éteint la LED
-        digitalWrite(led[i], HIGH);
+        digitalWrite(led_pins[i], HIGH);
       }
 
-      if (digitalRead(led[i])==LOW){
+      if (digitalRead(led_pins[i])==LOW){
         verification_code += 1;
       }
     }
