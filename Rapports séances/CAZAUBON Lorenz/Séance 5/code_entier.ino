@@ -151,6 +151,16 @@ void end_game() {
 
 }
 
+void end_game_mastermind() {
+  lcd.clear();
+  lcd.setCursor(0, 0);
+  lcd.print("Fin de la partie");
+  lcd.setCursor(0, 1);
+  lcd.print("A bientot, Merci");
+  delay(3000);
+  setup_afficheur();
+}
+
 void reset_game() {
 
   //Reset LED
@@ -654,7 +664,7 @@ void mastermind() {
         mastermin_phase_quatre();
       }
       delay(5000);
-      return end_game();
+      return end_game_mastermind();
     }
   }
 }
