@@ -108,7 +108,6 @@ void setup() {
   pinMode_bouton();
   pinMode_led();
   LED_off();
-  randomSeed(millis());
 
   // Initialisation de l'afficheur
   lcd.init();
@@ -120,6 +119,7 @@ void setup() {
   pinMode(dtPin,INPUT);
   pinMode(swPin,INPUT_PULLUP);
 }
+
 
 void setup_afficheur() {
 
@@ -200,6 +200,11 @@ void jeu_un_next() {
 
 void jeu_un() {
   
+  if (etat == "first") {
+    randomSeed(millis());
+    etat = "dfghiop";
+  }
+
   if ((bouton_aleatoire == 0) && (led_eteinte == 1)) {
     bouton_aleatoire = bouton_pins[random(0,NOMBRE_BOUTON)];
   }
@@ -331,6 +336,7 @@ void loop() {
   }
 }
 
+
 void readRotary( ) {
   //Etape 1 : mode de jeu
   if (etape==0){
@@ -350,29 +356,48 @@ void readRotary( ) {
             }
         }
 
-        lcd.clear();
-        lcd.setCursor(0,0);
-        lcd.print("Mode de Jeu :");
-        lcd.setCursor(0,1);
-
         // Selection mode de jeu en tournant l'encodeur rotatif
         if (rotVal==0) {
-          lcd.print("Reflexe Easy");
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("Mode de Jeu :");
+            lcd.setCursor(0,1);
+            lcd.print("Reflexe Easy");
         }
         if (rotVal==1) {
-          lcd.print("Reflexe Normal");
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("Mode de Jeu :");
+            lcd.setCursor(0,1);
+            lcd.print("Reflexe Normal");
         }
         if (rotVal==2) {
-          lcd.print("Reflexe Hard");
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("Mode de Jeu :");
+            lcd.setCursor(0,1);
+            lcd.print("Reflexe Hard");
         }
         if (rotVal==3) {
-          lcd.print("Simon");
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("Mode de Jeu :");
+            lcd.setCursor(0,1);
+            lcd.print("Simon");
         }
         if (rotVal==4) {
-          lcd.print("Mastermind");
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("Mode de Jeu :");
+            lcd.setCursor(0,1);
+            lcd.print("Mastermind");
         }
         if (rotVal==5) {
-          lcd.print("Duel");
+            lcd.clear();
+            lcd.setCursor(0,0);
+            lcd.print("Mode de Jeu :");
+            lcd.setCursor(0,1);
+            lcd.print("Duel");
         }
         choix_mode_jeu = rotVal;
         if ((choix_mode_jeu == 3 || choix_mode_jeu == 4 || choix_mode_jeu == 5) && (clkState == LOW)){
@@ -381,6 +406,7 @@ void readRotary( ) {
         delay(200);
     }
   }
+
 
   // Etape 2 : reglage du temps
   if (etape==1 && choix_mode_jeu >= 0 && choix_mode_jeu <= 2){  // Le Simon, Mastermind et Duel n'auront pas besoin de temps
@@ -401,19 +427,21 @@ void readRotary( ) {
                 rotVal = 0;
             }
         }
-        
-        lcd.setCursor(4,1);
+
         if (rotVal==0) {
+            lcd.setCursor(4,1);
             lcd.print("00:30");
             tSec = 30;
             tMin = 0;
         }
         if (rotVal==1) {
+            lcd.setCursor(4,1);
             lcd.print("00:45");
             tSec = 45;
             tMin = 0;
         }
         if (rotVal==2) {
+            lcd.setCursor(4,1);
             lcd.print("01:00");
             tSec = 0;
             tMin = 1;
@@ -424,11 +452,14 @@ void readRotary( ) {
     }
   }
 
-  if (etape == 2) {
+
+  // Etape 3 : verification, Serial uniquement
+  if (etape==2){
     etape = 3;
     blocage_bouton = LOW;
     delay(2000);
   }
+
 
   // Etape 4 : preparation avant lancement
   if (etape==3){
@@ -445,8 +476,8 @@ void readRotary( ) {
      lcd.clear();
      etape = 4;
   }
-
-  if (etape < 2) {clickEncodeur();} 
+ 
+  clickEncodeur();
 }
 
 //Partie qui fait fonctionner le "click" de
@@ -454,7 +485,7 @@ void readRotary( ) {
 void clickEncodeur(){
   clkLast = clkState;
   swState = digitalRead(swPin);
-  if (swState == LOW && swLast == HIGH && blocage_bouton==HIGH) {  
+  if (swState == LOW && swLast == HIGH && blocage_bouton==HIGH) {
       lcd.clear();
       lcd.setCursor(0,0);
       lcd.print("Validation etape");
