@@ -315,6 +315,8 @@ void loop() {
   //Post gameplay
   readRotary();
 
+  if (etape==0) {effet_bouton();}
+
   //Etape 4 : le jeu est lancé
   if (etape==4){
 
@@ -347,6 +349,13 @@ void loop() {
   }
 }
 
+void effet_bouton() {
+  for (int i = 0; i < NOMBRE_BOUTON; i++) {
+    digitalWrite(bouton_pins[i], 1);
+    delay(100);
+    digitalWrite(bouton_pins[i], 0);
+  }
+}
 
 void readRotary( ) {
   //Etape 1 : mode de jeu
@@ -576,7 +585,7 @@ void mastermin_phase_deux() {
 
     if ((val[i]==LOW)&&(ancien_val[i]==HIGH)) {
       tentative_bouton[i]=1-tentative_bouton[i];
-      delay(20);
+      delay(200);
     }
     ancien_val[i]=val[i];
 
