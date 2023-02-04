@@ -531,7 +531,7 @@ void mastermin_phase_une() {
 
     if ((val[i]==LOW)&&(ancien_val[i]==HIGH)) {
       choix_bouton[i]=1-choix_bouton[i];
-      delay(20);
+      delay(200);
     }
     ancien_val[i]=val[i];
 
