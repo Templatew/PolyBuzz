@@ -315,7 +315,7 @@ void loop() {
   //Post gameplay
   readRotary();
 
-  if (etape==0) {effet_bouton();}
+  if (etape<4) {effet_bouton();}
 
   //Etape 4 : le jeu est lancé
   if (etape==4){
