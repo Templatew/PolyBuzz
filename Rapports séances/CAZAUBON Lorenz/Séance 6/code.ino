@@ -539,8 +539,8 @@ void readRotary( ) {
   if (etape==2){
     etape = 3;
     blocage_bouton = LOW;
-    animation_on = false;
-    LED_off();
+    //animation_on = false;
+    //LED_off();
   }
 
 
