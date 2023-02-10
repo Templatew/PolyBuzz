@@ -30,8 +30,8 @@ unsigned long intervalle = 2000;
 bool animation_on = true;
 bool animation_already_on = false;
 int animation_state = 1;
-unsigned long animation_temps = 300;
-unsigned long animation_temps_ini = 0;
+long animation_temps = 300;
+long animation_temps_ini = 0;
 
 
 // Simon variables
