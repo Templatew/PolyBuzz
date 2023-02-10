@@ -124,8 +124,6 @@ void setup() {
   pinMode(clkPin,INPUT);
   pinMode(dtPin,INPUT);
   pinMode(swPin,INPUT_PULLUP);
-
-  Serial.println("okkkkk");
 }
 
 
@@ -154,7 +152,7 @@ void animation_passer_temps() {
 
 void animation() {
 
-    if ((animation_state == 1) && (animation_already_on == false)) {
+    if ((animation_state == 1) ) {
 
         for (int i = 8; i < 10; i++) { 
             digitalWrite(led_pins[i], 0);
@@ -163,7 +161,7 @@ void animation() {
         animation_passer_temps();
     }
 
-    if ((animation_state == 2) && (animation_already_on == false)) {
+    if ((animation_state == 2) ) {
 
         for (int i = 5; i < 8; i++) { 
             digitalWrite(led_pins[i], 0);
@@ -173,7 +171,7 @@ void animation() {
 
     }
 
-    if ((animation_state == 3) && (animation_already_on == false)) {
+    if ((animation_state == 3) ) {
 
         for (int i = 0; i < 5; i++) { 
             digitalWrite(led_pins[i], 0);
