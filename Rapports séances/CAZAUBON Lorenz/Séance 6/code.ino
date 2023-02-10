@@ -28,10 +28,10 @@ unsigned long intervalle = 2000;
 
 // Variables pour illuminer les LED (effet visuel)
 bool animation_on = true;
-int animation_led = 0;
-int animation_state = 1;
-int animation_temps = 300;
-int animation_temps_ini = 0;
+bool animation_already_on = false;
+unsigned int animation_state = 1;
+unsigned long animation_temps = 300;
+unsigned long animation_temps_ini = 0;
 
 
 // Simon variables
@@ -66,7 +66,6 @@ int tSec = 15;
 int tMin = 1;
 unsigned long timeInit=0;
 unsigned long intervalleTemps = 1000;
-unsigned long initialeTemps = 0;
 unsigned long previousMillis = 0;
 unsigned long currentMillis = 0;
 
@@ -103,7 +102,7 @@ void pinMode_led() {
 }
 
 void LED_off() {
-  for (int i = 0; i <= 10; i++) { 
+  for (int i = 0; i < 10; i++) { 
     digitalWrite(led_pins[i], 1);
   }
 }
@@ -143,41 +142,41 @@ void animation_passer_temps() {
     if (millis() - animation_temps_ini > animation_temps) {
             animation_state += 1;
             LED_off();
-            temps_ini_led = millis();
+            animation_already_on = false;
+            animation_temps_ini = millis();
             if (animation_state > 3) {
-                animation_state = 0;
+                animation_state = 1;
             }
     }
 }
 
 void animation() {
 
-    if (animation_state == 1) {
+    if ((animation_state == 1) && (animation_already_on == false)) {
 
-        digitalWrite(led_pins[8], 0);
-        digitalWrite(led_pins[9], 0);
-        
+        for (int i = 8; i < 10; i++) { 
+            digitalWrite(led_pins[i], 0);
+        }       
+        animation_already_on = true; 
         animation_passer_temps();
     }
 
-    if (animation_state == 2) {
+    if ((animation_state == 2) && (animation_already_on == false)) {
 
-        digitalWrite(led_pins[5], 0);
-        digitalWrite(led_pins[6], 0);
-        digitalWrite(led_pins[7], 0);
-        
+        for (int i = 5; i < 8; i++) { 
+            digitalWrite(led_pins[i], 0);
+        }       
+        animation_already_on = true; 
         animation_passer_temps();
 
     }
 
-    if (animation_state == 3) {
+    if ((animation_state == 3) && (animation_already_on == false)) {
 
-        digitalWrite(led_pins[0], 0);
-        digitalWrite(led_pins[1], 0);
-        digitalWrite(led_pins[2], 0);
-        digitalWrite(led_pins[3], 0);
-        digitalWrite(led_pins[4], 0);
-        
+        for (int i = 0; i < 5; i++) { 
+            digitalWrite(led_pins[i], 0);
+        }       
+        animation_already_on = true; 
         animation_passer_temps();
 
     }
@@ -188,6 +187,7 @@ void animation() {
 
 void end_game() {
 
+  
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Score final:");
@@ -255,6 +255,10 @@ void reset_game() {
 
   // Revenir au menu
   etape = 0;
+
+  // Restart animation
+  animation_on = true;
+  animation_already_on = false;
 }
 
 void jeu_un_next() {
@@ -374,14 +378,9 @@ void loop() {
     if (animation_on) {
         animation();
     }
-    
-
 
   //Etape 4 : le jeu est lancé
   if (etape==4){
-
-    animation_on = false;
-
 
     //Jeu 1 (test réflexes)
     if ((choix_mode_jeu == 0) || (choix_mode_jeu == 1) || (choix_mode_jeu == 2)){
@@ -540,7 +539,8 @@ void readRotary( ) {
   if (etape==2){
     etape = 3;
     blocage_bouton = LOW;
-    delay(2000);
+    animation_on = false;
+    LED_off();
   }
 
 
@@ -549,7 +549,7 @@ void readRotary( ) {
       lcd.clear();
       lcd.setCursor(1,0);
       lcd.print("Lancement dans");
-      for(int i=5; i>0; i--){
+      for(int i=3; i>0; i--){
           lcd.setCursor(7,1);
           lcd.print("0");
           lcd.setCursor(8,1);
@@ -558,7 +558,6 @@ void readRotary( ) {
       }
      lcd.clear();
      etape = 4;
-     animation_on = false;
   }
  
   clickEncodeur();
@@ -577,6 +576,7 @@ void clickEncodeur(){
       lcd.print("0");
       lcd.print(etape);
       etape += 1;
+      LED_off();
       delay(100);//debounce
   }
   swLast = swState;
@@ -778,7 +778,6 @@ void codeTimer(){
     if (currentMillis - previousMillis > intervalleTemps){
       previousMillis = currentMillis;
       timeInit = timeInit-1;
-      initialeTemps += intervalleTemps;
     }
    }
 
