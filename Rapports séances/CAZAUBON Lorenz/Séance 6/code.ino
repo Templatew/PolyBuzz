@@ -29,7 +29,7 @@ unsigned long intervalle = 2000;
 // Variables pour illuminer les LED (effet visuel)
 bool animation_on = true;
 bool animation_already_on = false;
-unsigned int animation_state = 1;
+int animation_state = 1;
 unsigned long animation_temps = 300;
 unsigned long animation_temps_ini = 0;
 
@@ -272,7 +272,7 @@ void jeu_un() {
   
   if (etat == "first") {
     randomSeed(millis());
-    etat = "dfghiop";
+    etat = "ok";
   }
 
   if ((bouton_aleatoire == 0) && (led_eteinte == 1)) {
