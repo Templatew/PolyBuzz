@@ -26,6 +26,13 @@ int led_eteinte = 1;
 unsigned long temps_ini = 0;
 unsigned long intervalle = 2000;
 
+// Variables pour illuminer les LED (effet visuel)
+bool animation_on = true;
+int animation_led = 0;
+int animation_state = 1;
+int animation_temps = 300;
+int animation_temps_ini = 0;
+
 
 // Simon variables
 int temps_simon = 500;
@@ -131,6 +138,54 @@ void setup_afficheur() {
 
 }
 
+void animation_passer_temps() {
+
+    if (millis() - animation_temps_ini > animation_temps) {
+            animation_state += 1;
+            LED_off();
+            temps_ini_led = millis();
+            if (animation_state > 3) {
+                animation_state = 0;
+            }
+    }
+}
+
+void animation() {
+
+    if (animation_state == 1) {
+
+        digitalWrite(led_pins[8], 0);
+        digitalWrite(led_pins[9], 0);
+        
+        animation_passer_temps();
+    }
+
+    if (animation_state == 2) {
+
+        digitalWrite(led_pins[5], 0);
+        digitalWrite(led_pins[6], 0);
+        digitalWrite(led_pins[7], 0);
+        
+        animation_passer_temps();
+
+    }
+
+    if (animation_state == 3) {
+
+        digitalWrite(led_pins[0], 0);
+        digitalWrite(led_pins[1], 0);
+        digitalWrite(led_pins[2], 0);
+        digitalWrite(led_pins[3], 0);
+        digitalWrite(led_pins[4], 0);
+        
+        animation_passer_temps();
+
+    }
+
+
+}
+
+
 void end_game() {
 
   lcd.clear();
@@ -138,7 +193,7 @@ void end_game() {
   lcd.print("Score final:");
   lcd.setCursor(0,1);
   lcd.print(score);
-  delay(2000);
+  delay(4000);
   reset_game();
 
   lcd.clear();
@@ -312,13 +367,21 @@ void afficher_score() {
 
 void loop() {
 
-  //Post gameplay
-  readRotary();
+    //Post gameplay
+    readRotary();
 
-  
+    // Animation des leds
+    if (animation_on) {
+        animation();
+    }
+    
+
 
   //Etape 4 : le jeu est lancé
   if (etape==4){
+
+    animation_on = false;
+
 
     //Jeu 1 (test réflexes)
     if ((choix_mode_jeu == 0) || (choix_mode_jeu == 1) || (choix_mode_jeu == 2)){
@@ -495,6 +558,7 @@ void readRotary( ) {
       }
      lcd.clear();
      etape = 4;
+     animation_on = false;
   }
  
   clickEncodeur();
