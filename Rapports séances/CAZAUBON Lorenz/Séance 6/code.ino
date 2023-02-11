@@ -152,7 +152,7 @@ void animation_passer_temps() {
 
 void animation() {
 
-    if ((animation_state == 1) ) {
+    if ((animation_state == 1) && (animation_already_on == false) ) {
 
         for (int i = 8; i < 10; i++) { 
             digitalWrite(led_pins[i], 0);
@@ -161,26 +161,23 @@ void animation() {
         animation_passer_temps();
     }
 
-    if ((animation_state == 2) ) {
+    if ((animation_state == 2) && (animation_already_on == false) ) {
 
         for (int i = 5; i < 8; i++) { 
             digitalWrite(led_pins[i], 0);
         }       
         animation_already_on = true; 
         animation_passer_temps();
-
     }
 
-    if ((animation_state == 3) ) {
+    if ((animation_state == 3) && (animation_already_on == false) ) {
 
         for (int i = 0; i < 5; i++) { 
             digitalWrite(led_pins[i], 0);
         }       
         animation_already_on = true; 
         animation_passer_temps();
-
     }
-
 
 }
 
