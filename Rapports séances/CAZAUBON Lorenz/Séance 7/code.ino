@@ -179,7 +179,7 @@ void animation() {
 
 void end_game() {
 
-  
+  LED_off();
   lcd.clear();
   lcd.setCursor(0,0);
   lcd.print("Score final:");
