@@ -536,8 +536,6 @@ void readRotary( ) {
   if (etape==2){
     etape = 3;
     blocage_bouton = LOW;
-    //animation_on = false;
-    //LED_off();
   }
 
 
@@ -547,6 +545,7 @@ void readRotary( ) {
       lcd.setCursor(1,0);
       lcd.print("Lancement dans");
       animation_on = false;
+      LED_off();
       for(int i=3; i>0; i--){
           lcd.setCursor(7,1);
           lcd.print("0");
