@@ -1,5 +1,22 @@
+
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+
+// include the SD library:
+#include <SPI.h>
+#include <SD.h>
+
+// set up variables using the SD utility library functions:
+Sd2Card card;
+SdVolume volume;
+SdFile root;
+
+// change this to match your SD shield or module;
+// Arduino Ethernet shield: pin 4
+// Adafruit SD shields and modules: pin 10
+// Sparkfun SD shield: pin 8
+// MKRZero SD: SDCARD_SS_PIN
+const int chipSelect = 10;
 
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 
@@ -83,6 +100,27 @@ int isolement_fonction = 0;
 
 // Score
 int score = 0;
+
+
+void write_on_sd_card(String path, String data) {
+    File dataFile = SD.open(path, FILE_WRITE);
+    if (dataFile) {
+        dataFile.println(data);
+        dataFile.close();
+    }
+}
+
+String read_on_sd_card(String path) {
+    File dataFile = SD.open(path);
+    String data = "";
+    if (dataFile) {
+        while (dataFile.available()) {
+            data += (char) dataFile.read();
+        }
+        dataFile.close();
+    }
+    return data;
+}
 
 void pinMode_bouton() {
   
