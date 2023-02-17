@@ -257,6 +257,7 @@ void jeu_un_next() {
   digitalWrite(bouton_aleatoire - 1, led_eteinte);
   bouton_aleatoire = bouton_pins[random(0,NOMBRE_BOUTON)];
   delay(200);
+  temps_ini = millis();
 }
 
 void jeu_un() {
@@ -279,7 +280,6 @@ void jeu_un() {
 
     if (((choix_mode_jeu == 1) || (choix_mode_jeu == 2)) && (millis() - temps_ini > intervalle)) {
         jeu_un_next();
-        temps_ini += intervalle;
     }
     
     for (int i = 0; i < NOMBRE_BOUTON; i++) {
