@@ -24,7 +24,7 @@ int led_eteinte = 1;
 
 // Temps limite pression bouton (jeu_un)
 unsigned long temps_ini = 0;
-unsigned long intervalle = 2000;
+unsigned long intervalle = 1000;
 
 // Variables pour illuminer les LED (effet visuel)
 bool animation_on = true;
@@ -377,7 +377,7 @@ void loop() {
     if ((choix_mode_jeu == 0) || (choix_mode_jeu == 1) || (choix_mode_jeu == 2)){
 
       // Réduire le temps durant lequel le bouton est allumé afin d'augmenter la difficulté.
-      if (choix_mode_jeu==2) {intervalle = 1000;}
+      if (choix_mode_jeu==2) {intervalle = 500;}
 
       afficher_score();
       jeu_un();
