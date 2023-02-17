@@ -28,7 +28,6 @@ unsigned long intervalle = 2000;
 
 // Variables pour illuminer les LED (effet visuel)
 bool animation_on = true;
-bool animation_already_on = false;
 int animation_state = 1;
 unsigned long animation_temps = 300;
 unsigned long animation_temps_ini = 0;
@@ -142,7 +141,6 @@ void animation_passer_temps() {
     if (millis() - animation_temps_ini > animation_temps) {
             animation_state += 1;
             LED_off();
-            animation_already_on = false;
             animation_temps_ini = millis();
             if (animation_state > 3) {
                 animation_state = 1;
@@ -152,30 +150,27 @@ void animation_passer_temps() {
 
 void animation() {
 
-    if ((animation_state == 1) && (animation_already_on == false) ) {
+    if ((animation_state == 1) ) {
 
         for (int i = 8; i < 10; i++) { 
             digitalWrite(led_pins[i], 0);
-        }       
-        animation_already_on = true; 
+        }        
         animation_passer_temps();
     }
 
-    if ((animation_state == 2) && (animation_already_on == false) ) {
+    if ((animation_state == 2) ) {
 
         for (int i = 5; i < 8; i++) { 
             digitalWrite(led_pins[i], 0);
-        }       
-        animation_already_on = true; 
+        }        
         animation_passer_temps();
     }
 
-    if ((animation_state == 3) && (animation_already_on == false) ) {
+    if ((animation_state == 3)) {
 
         for (int i = 0; i < 5; i++) { 
             digitalWrite(led_pins[i], 0);
         }       
-        animation_already_on = true; 
         animation_passer_temps();
     }
 
@@ -255,7 +250,6 @@ void reset_game() {
 
   // Restart animation
   animation_on = true;
-  animation_already_on = false;
 }
 
 void jeu_un_next() {
@@ -544,6 +538,7 @@ void readRotary( ) {
       lcd.clear();
       lcd.setCursor(1,0);
       lcd.print("Lancement dans");
+      etape = 4;
       animation_on = false;
       LED_off();
       for(int i=3; i>0; i--){
@@ -552,9 +547,9 @@ void readRotary( ) {
           lcd.setCursor(8,1);
           lcd.print(i);
           delay(1000);
-      }
+    }
      lcd.clear();
-     etape = 4;
+     
   }
  
   clickEncodeur();
