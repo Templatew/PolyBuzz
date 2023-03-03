@@ -409,6 +409,12 @@ void verification_duel(String joueur, bool gagnant) {
 
     lcd.setCursor(0, 1);
     lcd.print("Gagne!");
+
+    delay(1500);
+
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Ready?");
     return;
   }
 
@@ -429,6 +435,12 @@ void verification_duel(String joueur, bool gagnant) {
 
     lcd.setCursor(0, 1);
     lcd.print("Tricheur!");
+    
+    delay(1500);
+    
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Ready?");
     return;
   }
 
