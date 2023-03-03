@@ -375,76 +375,6 @@ void jeu_un() {
   }
 }
 
-void verification_duel(String joueur, bool gagnant) {
-
-  if ((score_joueur1 > 2) || (score_joueur2 > 2)) {
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Victoire du");
-    lcd.setCursor(0, 1);
-    if (score_joueur1 > 2) {
-      lcd.print("Joueur 1");
-    }
-    else {
-      lcd.print("Joueur 2");
-    }
-    delay(2000);
-    end_game_duel();
-    return;
-  }
-
-  if (gagnant == true) {
-    lcd.clear();
-    lcd.setCursor(0, 0);
-
-    if (joueur == "joueur1") {
-      lcd.print("Joueur 1");
-      score_joueur1 += 1;
-    }
-
-    else {
-      lcd.print("Joueur 2");
-      score_joueur2 += 1;
-    }
-
-    lcd.setCursor(0, 1);
-    lcd.print("Gagne!");
-    LED_off();
-    delay(1500);
-
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Ready?");
-    return;
-  }
-
-  if (gagnant == false) {
-
-    lcd.clear();
-    lcd.setCursor(0, 0);
-
-    if (joueur == "joueur1") {
-      lcd.print("Joueur 1");
-      score_joueur2 += 1;
-    }
-
-    else {
-      lcd.print("Joueur 2");
-      score_joueur1 += 1;
-    }
-
-    lcd.setCursor(0, 1);
-    lcd.print("Tricheur!");
-    LED_off();
-    delay(1500);
-    
-    lcd.clear();
-    lcd.setCursor(0, 0);
-    lcd.print("Ready?");
-    return;
-  }
-
-}
 
 void duel() {
 
@@ -467,14 +397,78 @@ void duel() {
     }
 
     if (digitalRead(bouton_pins[0]) == 0) {
-      if (duel_led_on == true) { verification_duel("Joueur 1", true); }
-      else { verification_duel("Joueur 1", false); }
+        
+        if (duel_led_on == true) {
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Joueur 1");
+            lcd.setCursor(0, 1);
+            lcd.print("Gagne");
+            score_joueur1 += 1;
+        }
+
+        else {
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Joueur 1");
+            lcd.setCursor(0, 1);
+            lcd.print("Tricheur");
+            score_joueur2 += 1;
+        }
+        duel_led_on = false;
+        LED_off();
+        delay(1000);
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Ready?");
     }
 
     if (digitalRead(bouton_pins[4]) == 0) {
-      if (duel_led_on == true) { verification_duel("Joueur 2", true); }
-      else { verification_duel("Joueur 2", false); }
+        
+        if (duel_led_on == true) {
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Joueur 2");
+            lcd.setCursor(0, 1);
+            lcd.print("Gagne");
+            score_joueur2 += 1;
+        }
+        else {
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Joueur 2");
+            lcd.setCursor(0, 1);
+            lcd.print("Tricheur");
+            score_joueur1 += 1;
+        }
+        duel_led_on = false;
+        LED_off();
+        delay(1000);;
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Ready?");
     }
+
+    if (score_joueur1 > 2) {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Victoire du");
+        lcd.setCursor(0, 1);
+        lcd.print("Joueur 1");
+        delay(2000);
+        end_game_duel();
+    }
+
+    if (score_joueur2 > 2) {
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Victoire du");
+        lcd.setCursor(0, 1);
+        lcd.print("Joueur 2");
+        delay(2000);
+        end_game_duel();
+    }
+
 }
 
 void simon() {
