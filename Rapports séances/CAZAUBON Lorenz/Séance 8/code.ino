@@ -374,11 +374,6 @@ void jeu_un() {
   }
 }
 
-void write_on_screen(String texte, int ligne) {
-    lcd.clear();
-    lcd.setCursor(0,ligne);
-    lcd.print(texte);
-}
 
 void duel() {
 
@@ -399,13 +394,19 @@ void duel() {
 
     if (digitalRead(bouton_pins[0]) == 0) {
         if (duel_led_on == true) {
-            write_on_screen("Joueur 1", 0);
-            write_on_screen("Gagne", 1);
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Joueur 1");
+            lcd.setCursor(0, 1);
+            lcd.print("Gagne");
             score_joueur1 += 1;
         }
         else {
-            write_on_screen("Joueur 1", 0);
-            write_on_screen("Tricheur", 1);
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Joueur 1");
+            lcd.setCursor(0, 1);
+            lcd.print("Tricheur");
             score_joueur2 += 1;
         }
         delay(1000);
@@ -415,13 +416,19 @@ void duel() {
 
     if (digitalRead(bouton_pins[4]) == 0) {
         if (duel_led_on == true) {
-            write_on_screen("Joueur 2", 0);
-            write_on_screen("Gagne", 1);
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Joueur 2");
+            lcd.setCursor(0, 1);
+            lcd.print("Gagne");
             score_joueur1 += 1;
         }
         else {
-            write_on_screen("Joueur 2", 0);
-            write_on_screen("Tricheur", 1);
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Joueur 2");
+            lcd.setCursor(0, 1);
+            lcd.print("Tricheur");
             score_joueur2 += 1;
         }
         delay(1000);
@@ -430,15 +437,21 @@ void duel() {
     }
 
     if (score_joueur1 > 2) {
-        write_on_screen("Victoire du", 0);
-        write_on_screen("Joueur 1", 1);
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Victoire du");
+        lcd.setCursor(0, 1);
+        lcd.print("Joueur 1");
         delay(2000);
         end_game_duel();
     }
 
     if (score_joueur2 > 2) {
-        write_on_screen("Victoire du", 0);
-        write_on_screen("Joueur 2", 1);
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Victoire du");
+        lcd.setCursor(0, 1);
+        lcd.print("Joueur 2");
         delay(2000);
         end_game_duel();
     }
