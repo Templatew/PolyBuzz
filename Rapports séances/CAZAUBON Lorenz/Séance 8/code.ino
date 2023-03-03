@@ -93,7 +93,6 @@ unsigned long intervalle_duel = 1000;
 const int INTERVALLE_DUEL_MIN = 1000;
 const int INTERVALLE_DUEL_MAX = 10000;
 bool duel_led_on = false;
-String duel_texte = "";
 int score_joueur1 = 0;
 int score_joueur2 = 0;
 
