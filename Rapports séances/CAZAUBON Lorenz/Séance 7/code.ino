@@ -2,21 +2,21 @@
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
-// // include the SD library:
-// #include <SPI.h>
-// #include <SD.h>
+// include the SD library:
+#include <SPI.h>
+#include <SD.h>
 
-// // set up variables using the SD utility library functions:
-// Sd2Card card;
-// SdVolume volume;
-// SdFile root;
+// set up variables using the SD utility library functions:
+Sd2Card card;
+SdVolume volume;
+SdFile root;
 
-// // change this to match your SD shield or module;
-// // Arduino Ethernet shield: pin 4
-// // Adafruit SD shields and modules: pin 10
-// // Sparkfun SD shield: pin 8
-// // MKRZero SD: SDCARD_SS_PIN
-// const int chipSelect = 10;
+// change this to match your SD shield or module;
+// Arduino Ethernet shield: pin 4
+// Adafruit SD shields and modules: pin 10
+// Sparkfun SD shield: pin 8
+// MKRZero SD: SDCARD_SS_PIN
+const int chipSelect = 10;
 
 LiquidCrystal_I2C lcd(0x27, 20, 4);
 
