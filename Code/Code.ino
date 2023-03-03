@@ -382,10 +382,10 @@ void duel() {
         randomSeed(millis());
         etat = "ok";
         intervalle_duel = random(INTERVALLE_DUEL_MIN, INTERVALLE_DUEL_MAX);
-        
+        temps_duel = millis();
     }
 
-    if ((etat = "ok") && (duel_led_on == false) && (millis() - temps_duel > intervalle_duel)) {
+    if ((duel_led_on == false) && (millis() - temps_duel > intervalle_duel)) {
         temps_duel = millis();
         digitalWrite(led_pins[0], 0);
         digitalWrite(led_pins[4], 0);
