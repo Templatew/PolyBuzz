@@ -1,6 +1,9 @@
 
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
+#include <Servo.h>
+
+Servo monservo;  // crée l’objet pour contrôler le servomoteur
 
 // include the SD library:
 #include <SPI.h>
@@ -94,7 +97,7 @@ int ancien_val[]={1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 int verification_code = 0;
 int similitude = 0;
 int phase = 1;
-int vie = 4;
+int vie = 5;
 bool blocage_bouton2 = HIGH;
 int isolement_fonction = 0;
 
@@ -161,6 +164,9 @@ void setup() {
   pinMode(clkPin,INPUT);
   pinMode(dtPin,INPUT);
   pinMode(swPin,INPUT_PULLUP);
+
+  monservo.attach(13);  // utilise la broche 13 pour le contrôle du servomoteur
+  monservo.write(180); // trap fermé 
 }
 
 
@@ -216,7 +222,6 @@ void animation() {
 
 
 void end_game() {
-
   LED_off();
   lcd.clear();
   lcd.setCursor(0,0);
@@ -231,9 +236,10 @@ void end_game() {
   lcd.print("Fin de la partie");
   lcd.setCursor(0, 1);
   lcd.print("A bientot, Merci");
+  delay(500);
+  servo_moteur();
   delay(3000);
-  setup_afficheur();
-
+  setup_afficheur();  
 }
 
 void end_game_mastermind() {
@@ -243,6 +249,8 @@ void end_game_mastermind() {
   lcd.print("Fin de la partie");
   lcd.setCursor(0, 1);
   lcd.print("A bientot, Merci");
+  delay(500);
+  servo_moteur();
   delay(3000);
   setup_afficheur();
 }
@@ -443,8 +451,8 @@ void loop() {
     }
 
     //Duel
-    if (choix_mode_jeu==5){ 
-    codeScore();
+    if (choix_mode_jeu==5){
+      //
     }
   }
 }
@@ -621,11 +629,6 @@ void clickEncodeur(){
   swLast = swState;
 }
 
-void codeScore(){
-  // Score
-  lcd.setCursor(0, 0);
-  lcd.print("Score: ");
-}
 
 void mastermind_welcome() {
   blocage_bouton==LOW;
@@ -741,7 +744,7 @@ void mastermind_phase_trois() {
   lcd.setCursor(2,0);
   lcd.print("Victoire du  ");
   lcd.setCursor(3,1);
-  lcd.print("Decrypteur  ");;
+  lcd.print("Decrypteur  ");
 }
 
 void mastermin_phase_quatre() {
@@ -835,4 +838,11 @@ int timeToCounter(int m,int s){
 void counterToTime(long cnt){
   tMin = (cnt%3600)/60;
   tSec = ((cnt%3600)%60);
+}
+
+//Fonction pour les récompenses (activation servomoteur)
+void servo_moteur(){
+  monservo.write(120);
+  delay(500);
+  monservo.write(180);
 }
