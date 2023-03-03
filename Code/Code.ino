@@ -383,6 +383,9 @@ void duel() {
         etat = "ok";
         intervalle_duel = random(INTERVALLE_DUEL_MIN, INTERVALLE_DUEL_MAX);
         temps_duel = millis();
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Ready?");
     }
 
     if ((duel_led_on == false) && (millis() - temps_duel > intervalle_duel)) {
