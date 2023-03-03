@@ -93,6 +93,7 @@ unsigned long intervalle_duel = 1000;
 const int INTERVALLE_DUEL_MIN = 1000;
 const int INTERVALLE_DUEL_MAX = 10000;
 bool duel_led_on = false;
+String duel_texte = "";
 int score_joueur1 = 0;
 int score_joueur2 = 0;
 
@@ -385,7 +386,6 @@ void duel() {
 
     if ((duel_led_on == false) && (millis() - temps_duel > intervalle_duel)) {
         temps_duel = millis();
-        intervalle_duel = random(1000, 10000);
         digitalWrite(led_pins[0], 0);
         digitalWrite(led_pins[4], 0);
         intervalle_duel = random(INTERVALLE_DUEL_MIN, INTERVALLE_DUEL_MAX);
@@ -393,25 +393,14 @@ void duel() {
     }
 
     if (digitalRead(bouton_pins[0]) == 0) {
-        if (duel_led_on == true) {
-            lcd.clear();
-            lcd.setCursor(0, 0);
-            lcd.print("Joueur 1");
-            lcd.setCursor(0, 1);
-            lcd.print("Gagne");
-            score_joueur1 += 1;
-        }
-        else {
-            lcd.clear();
-            lcd.setCursor(0, 0);
-            lcd.print("Joueur 1");
-            lcd.setCursor(0, 1);
-            lcd.print("Tricheur");
-            score_joueur2 += 1;
-        }
+        
         delay(1000);
         duel_led_on = false;
         LED_off();
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Ready?");
+        delay(500);
     }
 
     if (digitalRead(bouton_pins[4]) == 0) {
@@ -434,6 +423,10 @@ void duel() {
         delay(1000);
         duel_led_on = false;
         LED_off();
+        lcd.clear();
+        lcd.setCursor(0, 0);
+        lcd.print("Ready?");
+        delay(500);
     }
 
     if (score_joueur1 > 2) {
