@@ -99,11 +99,11 @@ int score_joueur2 = 0;
 
 
 //Variables pour la fonction Mastermind
-int val[10];
-int choix_bouton[10];
-int tentative_bouton[10];
-int ancien_val[10];
-void tableaux_mastermind();
+
+int val[]= {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}; // déclaration d’une variable globale qui mémorise l’état du bouton_pins
+int choix_bouton[]={1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+int tentative_bouton[]={1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
+int ancien_val[]={1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 int verification_code = 0;
 int similitude = 0;
 int phase = 1;
@@ -114,14 +114,6 @@ int isolement_fonction = 0;
 // Score
 int score = 0;
 
-void tableaux_mastermind(){
-  for (int i = 0; i < NOMBRE_BOUTON; i++) {
-    val[i] = 1;
-    choix_bouton[i] = 1;
-    tentative_bouton[i] = 1;
-    ancien_val[i] = 1;
-  }
-}
 
 void write_on_sd_card(String path, String data) {
     File dataFile = SD.open(path, FILE_WRITE);
@@ -390,9 +382,10 @@ void duel() {
         randomSeed(millis());
         etat = "ok";
         intervalle_duel = random(INTERVALLE_DUEL_MIN, INTERVALLE_DUEL_MAX);
+        
     }
 
-    if ((duel_led_on == false) && (millis() - temps_duel > intervalle_duel)) {
+    if ((etat = "ok") && (duel_led_on == false) && (millis() - temps_duel > intervalle_duel)) {
         temps_duel = millis();
         digitalWrite(led_pins[0], 0);
         digitalWrite(led_pins[4], 0);
@@ -402,23 +395,40 @@ void duel() {
 
     if (digitalRead(bouton_pins[0]) == 0) {
         
-        delay(1000);
+        if (duel_led_on == true) {
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Joueur 1");
+            lcd.setCursor(0, 1);
+            lcd.print("Gagne");
+            score_joueur1 += 1;
+        }
+
+        else {
+            lcd.clear();
+            lcd.setCursor(0, 0);
+            lcd.print("Joueur 1");
+            lcd.setCursor(0, 1);
+            lcd.print("Tricheur");
+            score_joueur2 += 1;
+        }
         duel_led_on = false;
         LED_off();
+        delay(1000);
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Ready?");
-        delay(500);
     }
 
     if (digitalRead(bouton_pins[4]) == 0) {
+        
         if (duel_led_on == true) {
             lcd.clear();
             lcd.setCursor(0, 0);
             lcd.print("Joueur 2");
             lcd.setCursor(0, 1);
             lcd.print("Gagne");
-            score_joueur1 += 1;
+            score_joueur2 += 1;
         }
         else {
             lcd.clear();
@@ -426,15 +436,14 @@ void duel() {
             lcd.print("Joueur 2");
             lcd.setCursor(0, 1);
             lcd.print("Tricheur");
-            score_joueur2 += 1;
+            score_joueur1 += 1;
         }
-        delay(1000);
         duel_led_on = false;
         LED_off();
+        delay(1000);;
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Ready?");
-        delay(500);
     }
 
     if (score_joueur1 > 2) {
@@ -740,8 +749,8 @@ void clickEncodeur(){
 
 void mastermind_welcome() {
   blocage_bouton==LOW;
-  lcd.setCursor(1,0);
-  lcd.print("Choisissez un");
+  lcd.setCursor(2,0);
+  lcd.print("Choissiez un");
   lcd.setCursor(0,1);
   lcd.print("code a 4 boutons");
   isolement_fonction = 1;
