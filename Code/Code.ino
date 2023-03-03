@@ -547,7 +547,7 @@ void loop() {
 
     //Duel
     if (choix_mode_jeu==5){ 
-    codeScore();
+      duel();
     }
   }
 }
@@ -722,12 +722,6 @@ void clickEncodeur(){
       delay(100);//debounce
   }
   swLast = swState;
-}
-
-void codeScore(){
-  // Score
-  lcd.setCursor(0, 0);
-  lcd.print("Score: ");
 }
 
 void mastermind_welcome() {
