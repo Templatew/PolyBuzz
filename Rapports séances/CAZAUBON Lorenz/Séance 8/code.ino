@@ -1,4 +1,6 @@
+#include <Servo.h>
 
+Servo monservo;  // crée l’objet pour contrôler le servomoteur
 #include <Wire.h>
 #include <LiquidCrystal_I2C.h>
 
@@ -171,6 +173,9 @@ void setup() {
   pinMode(clkPin,INPUT);
   pinMode(dtPin,INPUT);
   pinMode(swPin,INPUT_PULLUP);
+
+  monservo.attach(13);  // utilise la broche 13 pour le contrôle du servomoteur
+  monservo.write(180); // trap fermé 
 }
 
 
@@ -241,6 +246,8 @@ void end_game() {
   lcd.print("Fin de la partie");
   lcd.setCursor(0, 1);
   lcd.print("A bientot, Merci");
+  delay(500);
+  servo_moteur();
   delay(3000);
   setup_afficheur();
 
@@ -267,6 +274,8 @@ void end_game_mastermind() {
   lcd.print("Fin de la partie");
   lcd.setCursor(0, 1);
   lcd.print("A bientot, Merci");
+  delay(500);
+  servo_moteur();
   delay(3000);
   setup_afficheur();
 }
@@ -434,13 +443,6 @@ void duel() {
         end_game_duel();
     }
 
-
-
-
-
-
-    
-    
 }
 
 void simon() {
@@ -936,4 +938,11 @@ int timeToCounter(int m,int s){
 void counterToTime(long cnt){
   tMin = (cnt%3600)/60;
   tSec = ((cnt%3600)%60);
+}
+
+//Fonction pour les récompenses (activation servomoteur)
+void servo_moteur(){
+  monservo.write(120);
+  delay(500);
+  monservo.write(180);
 }

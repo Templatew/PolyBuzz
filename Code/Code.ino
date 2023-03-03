@@ -1,9 +1,8 @@
-
-#include <Wire.h>
-#include <LiquidCrystal_I2C.h>
 #include <Servo.h>
 
 Servo monservo;  // crée l’objet pour contrôler le servomoteur
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
 
 // include the SD library:
 #include <SPI.h>
@@ -88,6 +87,16 @@ unsigned long intervalleTemps = 1000;
 unsigned long previousMillis = 0;
 unsigned long currentMillis = 0;
 
+//Variables pour la fonction: Duel
+unsigned long temps_duel = 0;
+unsigned long intervalle_duel = 1000;
+const int INTERVALLE_DUEL_MIN = 1000;
+const int INTERVALLE_DUEL_MAX = 10000;
+bool duel_led_on = false;
+int score_joueur1 = 0;
+int score_joueur2 = 0;
+
+
 //Variables pour la fonction Mastermind
 
 int val[]= {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}; // déclaration d’une variable globale qui mémorise l’état du bouton_pins
@@ -97,7 +106,7 @@ int ancien_val[]={1, 1, 1, 1, 1, 1, 1, 1, 1, 1};
 int verification_code = 0;
 int similitude = 0;
 int phase = 1;
-int vie = 5;
+int vie = 4;
 bool blocage_bouton2 = HIGH;
 int isolement_fonction = 0;
 
@@ -222,6 +231,7 @@ void animation() {
 
 
 void end_game() {
+
   LED_off();
   lcd.clear();
   lcd.setCursor(0,0);
@@ -239,8 +249,23 @@ void end_game() {
   delay(500);
   servo_moteur();
   delay(3000);
-  setup_afficheur();  
+  setup_afficheur();
+
 }
+
+void end_game_duel(){
+
+    reset_game();
+    lcd.clear();
+    lcd.setCursor(0, 0);
+    lcd.print("Fin de la partie");
+    lcd.setCursor(0, 1);
+    lcd.print("A bientot, Merci");
+    delay(3000);
+    setup_afficheur();
+
+}
+
 
 void end_game_mastermind() {
   reset_game();
@@ -287,6 +312,14 @@ void reset_game() {
     tentative_bouton[i] = 1;
     ancien_val[i] = 1;
   }
+
+    // Reset duel
+    temps_duel = 0;
+    intervalle_duel = random(INTERVALLE_DUEL_MIN, INTERVALLE_DUEL_MAX);
+    duel_led_on = false;
+    score_joueur1 = 0;
+    score_joueur2 = 0;
+
   
   // Reset score
   score = 0;
@@ -341,12 +374,74 @@ void jeu_un() {
   }
 }
 
+void write_on_screen(String texte, int ligne) {
+    lcd.clear();
+    lcd.setCursor(0,ligne);
+    lcd.print(texte);
+}
+
 void duel() {
 
-    
+    if (etat == "first") {
+        randomSeed(millis());
+        etat = "ok";
+        intervalle_duel = random(INTERVALLE_DUEL_MIN, INTERVALLE_DUEL_MAX);
+    }
 
+    if ((duel_led_on == false) && (millis() - temps_duel > intervalle_duel)) {
+        temps_duel = millis();
+        intervalle_duel = random(1000, 10000);
+        digitalWrite(led_pins[0], 0);
+        digitalWrite(led_pins[4], 0);
+        intervalle_duel = random(INTERVALLE_DUEL_MIN, INTERVALLE_DUEL_MAX);
+        duel_led_on = true;
+    }
 
+    if (digitalRead(bouton_pins[0]) == 0) {
+        if (duel_led_on == true) {
+            write_on_screen("Joueur 1", 0);
+            write_on_screen("Gagne", 1);
+            score_joueur1 += 1;
+        }
+        else {
+            write_on_screen("Joueur 1", 0);
+            write_on_screen("Tricheur", 1);
+            score_joueur2 += 1;
+        }
+        delay(1000);
+        duel_led_on = false;
+        LED_off();
+    }
 
+    if (digitalRead(bouton_pins[4]) == 0) {
+        if (duel_led_on == true) {
+            write_on_screen("Joueur 2", 0);
+            write_on_screen("Gagne", 1);
+            score_joueur1 += 1;
+        }
+        else {
+            write_on_screen("Joueur 2", 0);
+            write_on_screen("Tricheur", 1);
+            score_joueur2 += 1;
+        }
+        delay(1000);
+        duel_led_on = false;
+        LED_off();
+    }
+
+    if (score_joueur1 > 2) {
+        write_on_screen("Victoire du", 0);
+        write_on_screen("Joueur 1", 1);
+        delay(2000);
+        end_game_duel();
+    }
+
+    if (score_joueur2 > 2) {
+        write_on_screen("Victoire du", 0);
+        write_on_screen("Joueur 2", 1);
+        delay(2000);
+        end_game_duel();
+    }
 
 }
 
@@ -451,8 +546,8 @@ void loop() {
     }
 
     //Duel
-    if (choix_mode_jeu==5){
-      //
+    if (choix_mode_jeu==5){ 
+    codeScore();
     }
   }
 }
@@ -629,6 +724,11 @@ void clickEncodeur(){
   swLast = swState;
 }
 
+void codeScore(){
+  // Score
+  lcd.setCursor(0, 0);
+  lcd.print("Score: ");
+}
 
 void mastermind_welcome() {
   blocage_bouton==LOW;
@@ -744,7 +844,7 @@ void mastermind_phase_trois() {
   lcd.setCursor(2,0);
   lcd.print("Victoire du  ");
   lcd.setCursor(3,1);
-  lcd.print("Decrypteur  ");
+  lcd.print("Decrypteur  ");;
 }
 
 void mastermin_phase_quatre() {
