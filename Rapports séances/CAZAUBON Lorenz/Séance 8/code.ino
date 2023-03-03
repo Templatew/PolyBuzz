@@ -385,7 +385,7 @@ void duel() {
         
     }
 
-    else if ((duel_led_on == false) && (millis() - temps_duel > intervalle_duel)) {
+    if ((etat = "ok") && (duel_led_on == false) && (millis() - temps_duel > intervalle_duel)) {
         temps_duel = millis();
         digitalWrite(led_pins[0], 0);
         digitalWrite(led_pins[4], 0);
@@ -418,7 +418,6 @@ void duel() {
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Ready?");
-        delay(500);
     }
 
     if (digitalRead(bouton_pins[4]) == 0) {
@@ -429,7 +428,7 @@ void duel() {
             lcd.print("Joueur 2");
             lcd.setCursor(0, 1);
             lcd.print("Gagne");
-            score_joueur1 += 1;
+            score_joueur2 += 1;
         }
         else {
             lcd.clear();
@@ -437,7 +436,7 @@ void duel() {
             lcd.print("Joueur 2");
             lcd.setCursor(0, 1);
             lcd.print("Tricheur");
-            score_joueur2 += 1;
+            score_joueur1 += 1;
         }
         duel_led_on = false;
         LED_off();
@@ -445,7 +444,6 @@ void duel() {
         lcd.clear();
         lcd.setCursor(0, 0);
         lcd.print("Ready?");
-        delay(500);
     }
 
     if (score_joueur1 > 2) {
