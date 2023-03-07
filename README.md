@@ -1,5 +1,5 @@
 Projet Arduino – 2022/2023
-`<br>`De CAZAUBON Lorenz et MAUVOISIN Paul - Groupe 1`<br>`
+<br>De CAZAUBON Lorenz et MAUVOISIN Paul - Groupe 1<br>
 
 <h2>Idée principale :</h2>
     <p>Créer un projet à mi-chemin entre jeu et test de réflexe</p>
