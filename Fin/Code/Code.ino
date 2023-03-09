@@ -752,7 +752,7 @@ void clickEncodeur(){
 void mastermind_welcome() {
   blocage_bouton==LOW;
   lcd.setCursor(2,0);
-  lcd.print("Choissiez un");
+  lcd.print("Choisissez un");
   lcd.setCursor(0,1);
   lcd.print("code a 4 boutons");
   isolement_fonction = 1;
