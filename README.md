@@ -37,7 +37,7 @@ Polybuzz is an innovative and interactive game box developed as a school project
 
 ## Contributors
 
- - CAZAUBON Lorenz
+ - @Templatew
  - MAUVOISIN Paul
 
 
