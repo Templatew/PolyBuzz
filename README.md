@@ -1,33 +1,36 @@
-Projet Arduino – 2022/2023
-<br>De CAZAUBON Lorenz et MAUVOISIN Paul - Groupe 1<br>
+# Polybuzz
 
-<h2>Idée principale :</h2>
-    <p>Créer un projet à mi-chemin entre jeu et test de réflexe</p>
+## Overview
 
-<h2>Origine de l’inspiration :</h2>
-    <p>Reproduire un test de réflexe comme ceux que l'on peut voir dans les entraînements de Formule 1.
-    <br>L'objectif de ce test est d'éteindre le plus de lumières qui s’allument en appuyant dessus.<br>
-</p>
+Polybuzz is an innovative and interactive game box developed as a school project. It combines the excitement of arcade games with reflex testing exercises similar to those used in F1 pilot training. This versatile device offers multiple game modes and features a reward system that dispenses a treat after each game.
 
-<h2>Apparence :</h2>
-    <ul>
-        <li>Physique : Le jeu est une boîte sur laquelle est disposée 10 buzzers. Sur cette même surface est apparent deux afficheurs, l'un pour le score du joueur, l'autre pour le temps restant. Et également un bouton pour démarrer la partie</li>
-        <li>Virtuel : Une interface sur téléphone connectée par bluetooth donne des informations complémentaires sur la partie : score, pourcentage de précision, nombre d'erreurs (buzzers éteints appuyés), classement, etc</li>
-    </ul>
+## Features
 
-<h2>Plusieurs modes de jeu :</h2>
-    <ul>
-        <li>Mode facile : Les lumières ne s’éteignent que lorsqu’on a appuyé dessus</li>
-        <li>Mode normal : Les lumières s’éteignent également au bout d’un certain temps fixe</li>
-    </ul>
+- **Multiple Game Modes:** Choose your game mode and play duration using a rotary encoder and an LCD screen.
+- **Reward System:** Earn treats dispensed into a tray after each game.
+- **Customizable Gameplay:** Adjust game settings for a personalized experience.
 
-<h2>Matériel :</h2>
-    <ul>
-        <li>1 boîte (à terme en bois)</li>
-        <li>10 buzzers</li>
-        <li>1 module bluetooth</li>
-        <li>A compléter..</li>
-    </ul>
+## Hardware Requirements
 
+- Arduino Mega
+- Rotary encoder
+- LCD screen
+- Various buttons and LEDs
+- Power supply and other electrical components
 
-</body>
+## Installation
+
+1. Assemble the hardware components based on the electrical schematic provided.
+2. Upload the provided code to the Arduino Mega.
+
+## How to Play
+
+- Turn the rotary encoder to scroll through game modes.
+- Press the encoder to select a mode and, if required, set the game duration.
+- Engage in reflex-based games or other arcade-style challenges.
+- Collect your reward after each game.
+
+## Future Enhancements
+
+- Addition of more game modes and difficulty levels.
+- Integration of a score-saving feature using an SD card.
