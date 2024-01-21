@@ -28,6 +28,6 @@ Projet Arduino – 2022/2023
         <li>1 module bluetooth</li>
         <li>A compléter..</li>
     </ul>
-![20230203_121936](https://user-images.githubusercontent.com/96289463/223478618-df27eb53-6f91-4594-a28d-f381ee7371af.jpg)
+
 
 </body>
