@@ -34,3 +34,8 @@ Polybuzz is an innovative and interactive game box developed as a school project
 
 - Addition of more game modes and difficulty levels.
 - Integration of a score-saving feature using an SD card.
+
+## Contributors
+
+ - CAZAUBON Lorenz
+ - MAUVOISIN Paul
